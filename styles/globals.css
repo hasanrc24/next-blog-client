@@ -5,3 +5,68 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
+nav{
+  height: 60px;
+  width: 100%;
+  /* background-color: lightblue; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  margin: .7rem 0;
+  z-index: 10;
+}
+.logo-txt{
+  font-size: larger;
+  color: #9762f5;
+}
+.bars{
+  display: none;
+  color: black;
+}
+.nav-list{
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
+}
+.links{
+  color: black;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 .7rem;
+  height: 100%;
+  cursor: pointer;
+}
+.btn:focus{
+  box-shadow: none;
+}
+.nav-btn .btn-sign{
+  background: #9762f5;
+  border: none;
+  color: white;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+ul{
+  margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .bars{display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-80%, 40%);
+  font-size: 1.8rem;
+  cursor: pointer;
+  }
+  .nav-list{
+    display: none;
+  }
+  .nav-btn{
+    display: none;
+  }
+}
