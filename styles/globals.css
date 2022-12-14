@@ -12,7 +12,7 @@ nav{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   margin: .7rem 0;
   z-index: 10;
 }
@@ -29,6 +29,7 @@ nav{
   display: flex;
   align-items: center;
   margin-right: 24px;
+  font-weight: 500;
 }
 .links{
   color: black;
@@ -63,9 +64,11 @@ ul{
   left: 0;
   z-index: 999;
   transition: all .3s ease;
+  opacity: 0;
 }
 .res-nav-open{
   top: 0 !important;
+  opacity: 1 !important;
 }
 .close-nav{
   right: 4%;
@@ -90,6 +93,17 @@ ul{
 .res-nav-btn{
   color: white;
   background-color: #9762f5;
+}
+footer{
+  /* position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0; */
+  padding: 1rem 0 2rem 0;
+  background-color: white;
+}
+.footer-clr{
+  color: rgb(131, 126, 126);
 }
 
 @media screen and (max-width: 768px) {

@@ -1,8 +1,14 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Navbar from "../components/Navbar";
-import NavbarResponsive from "../components/navbarResponsive";
+import { fetchCategories } from "../http";
+import { AxiosResponse } from "axios";
+import { Category, CollectionTypes } from "../types";
 
-export default function Home() {
+interface propsType {
+  categories: Category[];
+}
+export default function Home({ categories }: propsType) {
+  console.log(categories);
   return (
     <div>
       <Head>
@@ -12,8 +18,23 @@ export default function Home() {
       </Head>
 
       <main>
+        {categories?.map((curCat) => {
+          const { slug, title } = curCat.attributes;
+          return <span key={slug}>{title}</span>;
+        })}
         <h1>Hello there</h1>
       </main>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { data }: AxiosResponse<CollectionTypes<Category[]>> =
+    await fetchCategories();
+
+  return {
+    props: {
+      categories: data.data,
+    },
+  };
+};

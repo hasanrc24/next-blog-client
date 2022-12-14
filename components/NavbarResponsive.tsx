@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
-import { FaBars } from "react-icons/fa";
 import Image from "next/image";
 
 interface propType {
@@ -21,7 +20,7 @@ const NavbarResponsive = ({ navOpen, setNavOpen }: propType) => {
         <li>
           <Link href="/" onClick={() => setNavOpen(false)}>
             <Image src="/logo.png" alt="logo" height={40} width={40} />
-            <span className="logo-txt">Next Blog</span>
+            {/* <span className="logo-txt">Next Blog</span> */}
           </Link>
         </li>
         <li>

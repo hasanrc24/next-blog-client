@@ -4,7 +4,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 import Navbar from "../components/Navbar";
-import NavbarResponsive from "../components/navbarResponsive";
+import Footer from "../components/Footer";
+import NavbarResponsive from "../components/NavbarResponsive";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [navOpen, setNavOpen] = useState(false);
@@ -21,8 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <div className="container">
         <NavbarResponsive setNavOpen={setNavOpen} navOpen={navOpen} />
-        <Navbar setNavOpen={setNavOpen} navOpen={navOpen} />
+        <Navbar setNavOpen={setNavOpen} />
         <Component {...pageProps} />
+        <Footer />
       </div>
     </>
   );

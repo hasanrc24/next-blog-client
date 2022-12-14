@@ -4,10 +4,9 @@ import React from "react";
 import { FaBars } from "react-icons/fa";
 
 interface propType {
-  navOpen: Boolean;
   setNavOpen: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
-const Navbar = ({ navOpen, setNavOpen }: propType) => {
+const Navbar = ({ setNavOpen }: propType) => {
   return (
     <nav>
       <Link href="/" className="d-flex align-items-center">
