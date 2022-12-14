@@ -3,14 +3,23 @@ import Link from "next/link";
 import React from "react";
 import { FaBars } from "react-icons/fa";
 
-const Navbar = () => {
+interface propType {
+  navOpen: Boolean;
+  setNavOpen: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+}
+const Navbar = ({ navOpen, setNavOpen }: propType) => {
   return (
     <nav>
       <Link href="/" className="d-flex align-items-center">
         <Image src="/logo.png" alt="logo" height={40} width={40} />
         <span className="logo-txt fw-bold">Next Blog</span>
       </Link>
-      <FaBars className="bars" />
+      <FaBars
+        className="bars"
+        onClick={() => {
+          setNavOpen(true);
+        }}
+      />
       <ul className="nav-list">
         <li className="links">
           <Link href="/products">Products</Link>

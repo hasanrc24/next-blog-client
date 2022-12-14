@@ -1,9 +1,13 @@
+import { useState } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
+import Navbar from "../components/Navbar";
+import NavbarResponsive from "../components/navbarResponsive";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [navOpen, setNavOpen] = useState(false);
   return (
     <>
       <Head>
@@ -16,6 +20,8 @@ export default function App({ Component, pageProps }: AppProps) {
         crossOrigin="anonymous"
       />
       <div className="container">
+        <NavbarResponsive setNavOpen={setNavOpen} navOpen={navOpen} />
+        <Navbar setNavOpen={setNavOpen} navOpen={navOpen} />
         <Component {...pageProps} />
       </div>
     </>
