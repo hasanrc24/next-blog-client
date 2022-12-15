@@ -40,10 +40,15 @@ nav{
   height: 100%;
   cursor: pointer;
 }
+.links a:hover{
+  color: #9762f5;
+  transition: all .2s ease;
+}
 .btn:focus{
   box-shadow: none;
 }
 .nav-btn .btn-sign{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   background: #9762f5;
   border: none;
   color: white;
@@ -90,20 +95,48 @@ ul{
   font-weight: bold;
   font-size: large;
 }
+.res-nav-ul li a:hover{
+  transition: all .2s ease;
+  color: #9762f5;
+}
 .res-nav-btn{
   color: white;
   background-color: #9762f5;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
+
 footer{
   /* position: fixed;
   width: 100%;
   bottom: 0;
   left: 0; */
   padding: 1rem 0 2rem 0;
-  background-color: white;
 }
 .footer-clr{
   color: rgb(131, 126, 126);
+}
+
+.cat-menu{
+  padding: 0 0 1rem 0;
+}
+.cat-menu:hover{
+  color: #9762f5;
+  transition: all .2s ease;
+}
+.active{
+  border-bottom: 2px solid #9762f5;
+  color: #9762f5;
+}
+.cat-bar{
+  border-bottom: 2px solid rgb(226, 221, 221);
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 1rem 0 0 0;
+}
+.cat-search{
+  border: none;
+  outline: none;
+  margin-left: .5rem;
 }
 
 @media screen and (max-width: 768px) {
@@ -119,5 +152,8 @@ footer{
   }
   .nav-btn{
     display: none;
+  }
+  .cat-search {
+    margin: 1rem 0 .5rem .5rem;
   }
 }

@@ -10,3 +10,7 @@ const api = axios.create({
 export const fetchCategories = async() => {
     return api.get('/api/categories');
 }
+
+export const fetArticles = async() => {
+    return api.get('/api/articles?populate=*');
+}

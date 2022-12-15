@@ -9,6 +9,7 @@ import NavbarResponsive from "../components/NavbarResponsive";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [navOpen, setNavOpen] = useState(false);
+
   return (
     <>
       <Head>

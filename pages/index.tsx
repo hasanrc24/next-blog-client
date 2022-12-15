@@ -1,14 +1,18 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { fetchCategories } from "../http";
+import { fetArticles, fetchCategories } from "../http";
 import { AxiosResponse } from "axios";
-import { Category, CollectionTypes } from "../types";
+import { Category, CollectionTypes, Article } from "../types";
+import Categories from "../components/Categories";
+import Articles from "../components/Articles";
 
 interface propsType {
   categories: Category[];
+  articles: Article[];
 }
-export default function Home({ categories }: propsType) {
-  console.log(categories);
+export default function Home({ categories, articles }: propsType) {
+  console.log(articles);
+
   return (
     <div>
       <Head>
@@ -17,24 +21,22 @@ export default function Home({ categories }: propsType) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        {categories?.map((curCat) => {
-          const { slug, title } = curCat.attributes;
-          return <span key={slug}>{title}</span>;
-        })}
-        <h1>Hello there</h1>
-      </main>
+      <Categories categories={categories} />
+      <Articles articles={articles} />
     </div>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const { data }: AxiosResponse<CollectionTypes<Category[]>> =
+  const { data: cateogry }: AxiosResponse<CollectionTypes<Category[]>> =
     await fetchCategories();
 
+  const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
+    await fetArticles();
   return {
     props: {
-      categories: data.data,
+      categories: cateogry.data,
+      articles: articles.data,
     },
   };
 };

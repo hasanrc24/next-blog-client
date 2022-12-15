@@ -5,7 +5,6 @@ export interface Category{
         slug: string
     }
 }
-
 export interface CategoryMeta{
     pagination: {
         page: number,
@@ -14,8 +13,32 @@ export interface CategoryMeta{
         total: number
     }
 }
-
 export interface CollectionTypes<T>{
     data: T,
     meta: CategoryMeta
+}
+
+export interface Image{
+    data:{
+        id: number,
+        attributes: {
+            url: string,
+            formats:{
+                small: {
+                    url: string
+                }
+            }
+        }
+    }
+}
+
+export interface Article{
+    id: number,
+    attributes: {
+        title: string,
+        body: string,
+        slug: string,
+        createdAt: string,
+        image: Image
+    }
 }
