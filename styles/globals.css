@@ -5,10 +5,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
+a:hover{
+  color: initial;
+}
 nav{
   height: 60px;
   width: 100%;
-  /* background-color: lightblue; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -137,6 +139,30 @@ footer{
   border: none;
   outline: none;
   margin-left: .5rem;
+}
+.article-author{
+  font-weight: 500;
+}
+.article-created{
+  color: gray;
+}
+.special-card{
+  height: 180px;
+  border-radius: 8px;
+  background-color: #9762f5;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.let::first-letter{
+  border-bottom:  4px solid #642fbe;
+}
+.special-card:hover{
+  color: white;
 }
 
 @media screen and (max-width: 768px) {
