@@ -32,6 +32,18 @@ export interface Image{
     }
 }
 
+export interface Avatar{
+    data:{
+        attributes:{
+            formats:{
+                thumbnail:{
+                    url: string
+                }
+            }
+        }
+    }
+}
+
 export interface Article{
     id: number,
     attributes: {
@@ -40,5 +52,17 @@ export interface Article{
         slug: string,
         createdAt: string,
         image: Image
+        author:{
+            data:{
+                attributes:{
+                    createdAt: string,
+                    email: string,
+                    firstName: string,
+                    lastName: string,
+                    username: string,
+                    avatar: Avatar
+                }
+            }
+        }
     }
 }

@@ -11,6 +11,6 @@ export const fetchCategories = async() => {
     return api.get('/api/categories');
 }
 
-export const fetArticles = async() => {
-    return api.get('/api/articles?populate=*');
+export const fetArticles = async(queryString: string) => {
+    return api.get(`/api/articles?${queryString}`);
 }

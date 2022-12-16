@@ -5,6 +5,7 @@ import { AxiosResponse } from "axios";
 import { Category, CollectionTypes, Article } from "../types";
 import Categories from "../components/Categories";
 import Articles from "../components/Articles";
+import qs from "qs";
 
 interface propsType {
   categories: Category[];
@@ -28,11 +29,18 @@ export default function Home({ categories, articles }: propsType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  const options = {
+    populate: ["author.avatar"],
+    sort: ["id:desc"],
+  };
+  const queryString = qs.stringify(options);
+
   const { data: cateogry }: AxiosResponse<CollectionTypes<Category[]>> =
     await fetchCategories();
 
   const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
-    await fetArticles();
+    await fetArticles(queryString);
+
   return {
     props: {
       categories: cateogry.data,
