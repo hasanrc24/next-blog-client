@@ -11,7 +11,7 @@ const Categories = ({ categories }: propsType) => {
   const router = useRouter();
 
   const isActive = (category: Category) => {
-    return category.attributes.slug === router.query.category;
+    return category.attributes.slug === router.query.categorySlug;
   };
   return (
     <div className="cat-bar row ">

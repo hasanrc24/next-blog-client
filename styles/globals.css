@@ -149,7 +149,7 @@ footer{
 .special-card{
   height: 180px;
   border-radius: 8px;
-  background-color: #9762f5;
+  background-color: #34d399;
   display: flex;
   align-items: center;
   color: white;
@@ -159,7 +159,7 @@ footer{
   overflow: hidden;
 }
 .let::first-letter{
-  border-bottom:  4px solid #642fbe;
+  border-bottom:  4px solid #059669;
 }
 .special-card:hover{
   color: white;

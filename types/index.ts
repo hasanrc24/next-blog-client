@@ -44,6 +44,13 @@ export interface Avatar{
     }
 }
 
+export interface Pagination{
+    page: string,
+    pageSize: string,
+    pageCount: string,
+    total: string
+}
+
 export interface Article{
     id: number,
     attributes: {
