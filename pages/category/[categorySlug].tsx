@@ -1,6 +1,8 @@
 import { AxiosResponse } from "axios";
+import debounce from "lodash.debounce";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import qs from "qs";
 import React from "react";
 import Articles from "../../components/Articles";
@@ -19,6 +21,8 @@ interface propsType {
 }
 
 const category = ({ categories, articles, slug }: propsType) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const router = useRouter();
   const formatTitle = (slug: string) => {
     let splitted = slug.split("-");
     if (Number.isNaN(parseFloat(splitted[1]))) {
@@ -28,6 +32,10 @@ const category = ({ categories, articles, slug }: propsType) => {
       return splitted[0].charAt(0).toUpperCase() + splitted[0].slice(1);
     }
   };
+
+  const handleSearch = (e: any) => {
+    router.push(`/category/${slug}/?search=${e.target.value}`);
+  };
   return (
     <>
       <Head>
@@ -36,7 +44,10 @@ const category = ({ categories, articles, slug }: propsType) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="">
-        <Categories categories={categories} />
+        <Categories
+          categories={categories}
+          handleSearch={debounce(handleSearch, 400)}
+        />
         <Articles articles={articles.items} />
         <Paginate
           page={articles.pagination.page}
@@ -57,6 +68,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     filters: {
       category: {
         slug: query.categorySlug,
+      },
+      title: {
+        $containsi: query.search,
       },
     },
     pagination: {

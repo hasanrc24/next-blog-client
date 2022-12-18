@@ -7,6 +7,8 @@ import Categories from "../components/Categories";
 import Articles from "../components/Articles";
 import qs from "qs";
 import Paginate from "../components/Paginate";
+import { useRouter } from "next/router";
+import debounce from "lodash.debounce";
 
 interface propsType {
   categories: Category[];
@@ -16,8 +18,9 @@ interface propsType {
   };
 }
 export default function Home({ categories, articles }: propsType) {
+  const router = useRouter();
   const handleSearch = (e: any) => {
-    console.log(e.target.value);
+    router.push(`/?search=${e.target.value}`);
   };
   return (
     <div>
@@ -27,7 +30,10 @@ export default function Home({ categories, articles }: propsType) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Categories categories={categories} handleSearch={handleSearch} />
+      <Categories
+        categories={categories}
+        handleSearch={debounce(handleSearch, 400)}
+      />
       <Articles articles={articles.items} />
       <Paginate
         page={articles.pagination.page}
@@ -43,9 +49,22 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     sort: ["id:desc"],
     pagination: {
       page: query.page ? query.page : 1,
-      pageSize: 10,
+      pageSize: 2,
+    },
+    filters: {
+      title: {
+        $containsi: query.search,
+      },
     },
   };
+
+  // if (query.search) {
+  //   options.filters = {
+  //     body: {
+  //       $containsi: query.search,
+  //     },
+  //   };
+  // }
   const queryString = qs.stringify(options);
 
   const { data: cateogry }: AxiosResponse<CollectionTypes<Category[]>> =

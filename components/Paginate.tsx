@@ -18,6 +18,7 @@ const Paginate = ({ page, pageCount, redictUrl = "/" }: propsType) => {
 
   const handlePaginate = (direction: number) => {
     const queryString = qs.stringify({
+      ...router.query,
       page: page + direction,
     });
     router.push(redictUrl + "?" + queryString);
