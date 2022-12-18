@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 
 interface propsType {
   categories: Category[];
+  handleSearch?: (e: any) => void;
 }
-const Categories = ({ categories }: propsType) => {
+const Categories = ({ categories, handleSearch }: propsType) => {
   const router = useRouter();
 
   const isActive = (category: Category) => {
@@ -37,7 +38,12 @@ const Categories = ({ categories }: propsType) => {
       <div className="col-md-6">
         <div className=" float-md-end">
           <BiSearch />
-          <input type="text" placeholder="Search" className="cat-search" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="cat-search"
+            onChange={handleSearch}
+          />
         </div>
       </div>
     </div>

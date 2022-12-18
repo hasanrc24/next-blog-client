@@ -45,10 +45,10 @@ export interface Avatar{
 }
 
 export interface Pagination{
-    page: string,
-    pageSize: string,
-    pageCount: string,
-    total: string
+    page: number,
+    pageSize: number,
+    pageCount: number,
+    total: number
 }
 
 export interface Article{

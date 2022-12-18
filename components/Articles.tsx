@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { Article } from "../types";
@@ -13,7 +12,7 @@ const Articles = ({ articles }: propsType) => {
   return (
     <div className="row">
       {articles.length === 0 ? (
-        <div className="text-center fw-bolder py-5">No blog found</div>
+        <div className="text-center fw-bolder py-5">No article found</div>
       ) : (
         articles?.map((curCat, idx) => {
           return (
