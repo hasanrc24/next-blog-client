@@ -139,10 +139,8 @@ footer{
   outline: none;
   margin-left: .5rem;
 }
-.article-author{
-  font-weight: 500;
-}
 .article-created{
+  font-weight: 500;
   color: gray;
 }
 .special-card{

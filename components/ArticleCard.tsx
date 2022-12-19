@@ -22,12 +22,12 @@ const ArticleCard = ({ article }: propsType) => {
           width={30}
           className="rounded"
         />
-        <span className="mx-2 article-author">
+        <span className="mx-2 fw-bold">
           {article.attributes.author.data.attributes.firstName +
             " " +
             article.attributes.author.data.attributes.lastName}
         </span>
-        <span className="article-author article-created">
+        <span className="article-created">
           {formatDate(article.attributes.createdAt)}
         </span>
       </div>
