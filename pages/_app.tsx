@@ -6,6 +6,7 @@ import Script from "next/script";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import NavbarResponsive from "../components/NavbarResponsive";
+import NextNProgress from "nextjs-progressbar";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [navOpen, setNavOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossOrigin="anonymous"
       />
+      <NextNProgress color="#9762f5" />
       <div className="container">
         <NavbarResponsive setNavOpen={setNavOpen} navOpen={navOpen} />
         <Navbar setNavOpen={setNavOpen} />

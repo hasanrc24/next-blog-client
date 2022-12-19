@@ -42,12 +42,12 @@ const articleSlug = ({ singleArticle }: propsType) => {
           </div>
           <div className="mt-4">
             {singleArticle.attributes.image?.data && (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 src={`http://localhost:1337${singleArticle.attributes.image?.data?.attributes?.url}`}
                 alt="body image"
                 className="img-fluid"
-                height={350}
-                width={800}
+                style={{ width: "100%" }}
               />
             )}
             <p className="pt-3">{body}</p>
