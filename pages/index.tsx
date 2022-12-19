@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { fetArticles, fetchCategories } from "../http";
+import { fetchArticles, fetchCategories } from "../http";
 import { AxiosResponse } from "axios";
 import { Category, CollectionTypes, Article, Pagination } from "../types";
 import Categories from "../components/Categories";
@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     await fetchCategories();
 
   const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
-    await fetArticles(queryString);
+    await fetchArticles(queryString);
 
   return {
     props: {

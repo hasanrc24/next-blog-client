@@ -11,6 +11,6 @@ export const fetchCategories = async() => {
     return api.get('/api/categories');
 }
 
-export const fetArticles = async(queryString: string) => {
+export const fetchArticles = async(queryString: string) => {
     return api.get(`/api/articles?${queryString}`);
 }

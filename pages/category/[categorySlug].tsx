@@ -8,7 +8,7 @@ import React from "react";
 import Articles from "../../components/Articles";
 import Categories from "../../components/Categories";
 import Paginate from "../../components/Paginate";
-import { fetArticles, fetchCategories } from "../../http";
+import { fetchArticles, fetchCategories } from "../../http";
 import { Article, Category, CollectionTypes, Pagination } from "../../types";
 
 interface propsType {
@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     await fetchCategories();
 
   const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
-    await fetArticles(queryString);
+    await fetchArticles(queryString);
   return {
     props: {
       categories: category.data,

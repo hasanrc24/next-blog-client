@@ -12,7 +12,7 @@ const ArticleCard = ({ article }: propsType) => {
   return (
     <div>
       <h4>
-        <Link href="#">{title}</Link>
+        <Link href={`/article/${article.attributes.slug}`}>{title}</Link>
       </h4>
       <div className="my-3">
         <Image
