@@ -2,11 +2,18 @@ import { AxiosResponse } from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import qs from "qs";
 import React from "react";
 import { fetchArticles } from "../../http";
 import { CollectionTypes, Article } from "../../types";
 import { formatDate } from "../../utils/index";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTwitter,
+} from "react-icons/fa";
 
 interface propsType {
   singleArticle: Article;
@@ -53,7 +60,36 @@ const articleSlug = ({ singleArticle }: propsType) => {
             <p className="pt-3">{body}</p>
           </div>
         </div>
-        <div className="col-md-4">hello</div>
+        <div className="col-md-4">
+          <h5>Signup to our newsletter</h5>
+          <p className="py-3">
+            Get the latest on all things data delivered straight to your inbox
+          </p>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Your work email"
+            className="form-control"
+          />
+          <button className="btn sub-btn mt-3 px-4">Subscribe</button>
+
+          <div className="d-flex gap-2 share mt-4">
+            <span className="fw-bold">Share</span>
+            <Link className="share" href="/">
+              <FaFacebookF />
+            </Link>
+            <Link className="share" href="/">
+              <FaTwitter />
+            </Link>
+            <Link className="share" href="/">
+              <FaInstagram />
+            </Link>
+            <Link className="share" href="/">
+              <FaLinkedinIn />
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   );

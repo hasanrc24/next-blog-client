@@ -169,6 +169,18 @@ footer{
 .btn-paginate:hover{
   color: white;
 }
+.sub-btn{
+  border: 2px solid #9762f5;
+  font-weight: 700;
+  color: #9762f5;
+}
+.sub-btn:hover{
+  color: white;
+  background-color: #9762f5;
+}
+.share{
+  color: rgb(90, 88, 88);
+}
 
 @media screen and (max-width: 768px) {
   .bars{
