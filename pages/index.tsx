@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps =
       sort: ["id:desc"],
       pagination: {
         page: query.page ? query.page : 1,
-        pageSize: 2,
+        pageSize: 4,
       },
       filters: {
         title: {

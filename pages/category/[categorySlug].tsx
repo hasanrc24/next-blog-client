@@ -80,7 +80,7 @@ export const getServerSideProps: GetServerSideProps =
       },
       pagination: {
         page: query.page ? query.page : 1,
-        pageSize: 1,
+        pageSize: 4,
       },
     };
     const queryString = qs.stringify(options);
