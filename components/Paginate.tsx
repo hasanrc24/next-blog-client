@@ -9,6 +9,8 @@ interface propsType {
 }
 const Paginate = ({ page, pageCount, redictUrl = "/" }: propsType) => {
   const router = useRouter();
+
+  // console.log(page, pageCount);
   const prevDisabled = (): boolean => {
     return page <= 1;
   };

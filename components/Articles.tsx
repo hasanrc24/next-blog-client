@@ -11,7 +11,7 @@ const Articles = ({ articles }: propsType) => {
   const router = useRouter();
   return (
     <div className="row">
-      {articles.length === 0 ? (
+      {articles?.length === 0 ? (
         <div className="text-center fw-bolder py-5">No article found</div>
       ) : (
         articles?.map((curCat, idx) => {

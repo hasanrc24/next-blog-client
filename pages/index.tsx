@@ -9,6 +9,10 @@ import qs from "qs";
 import Paginate from "../components/Paginate";
 import { useRouter } from "next/router";
 import debounce from "lodash.debounce";
+import { wrapper } from "../redux/store";
+import { allArticles, articleSubscribe } from "../redux/articleSlice";
+import { allCategories, categorySubscribe } from "../redux/categorySlice";
+import { useSelector } from "react-redux";
 
 interface propsType {
   categories: Category[];
@@ -19,6 +23,10 @@ interface propsType {
 }
 export default function Home({ categories, articles }: propsType) {
   const router = useRouter();
+  // const dispatch = useDispatch();
+  const articlesFromStore = useSelector(articleSubscribe);
+  const categoryFromStore = useSelector(categorySubscribe);
+
   const handleSearch = (e: any) => {
     router.push(`/?search=${e.target.value}`);
   };
@@ -31,10 +39,10 @@ export default function Home({ categories, articles }: propsType) {
       </Head>
 
       <Categories
-        categories={categories}
+        categories={categoryFromStore.categories.data}
         handleSearch={debounce(handleSearch, 400)}
       />
-      <Articles articles={articles.items} />
+      <Articles articles={articlesFromStore.articles.data} />
       <Paginate
         page={articles.pagination.page}
         pageCount={articles.pagination.pageCount}
@@ -43,43 +51,46 @@ export default function Home({ categories, articles }: propsType) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const options = {
-    populate: ["author.avatar"],
-    sort: ["id:desc"],
-    pagination: {
-      page: query.page ? query.page : 1,
-      pageSize: 2,
-    },
-    filters: {
-      title: {
-        $containsi: query.search,
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async ({ query }) => {
+    const options = {
+      populate: ["author.avatar"],
+      sort: ["id:desc"],
+      pagination: {
+        page: query.page ? query.page : 1,
+        pageSize: 2,
       },
-    },
-  };
-
-  // if (query.search) {
-  //   options.filters = {
-  //     body: {
-  //       $containsi: query.search,
-  //     },
-  //   };
-  // }
-  const queryString = qs.stringify(options);
-
-  const { data: cateogry }: AxiosResponse<CollectionTypes<Category[]>> =
-    await fetchCategories();
-
-  const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
-    await fetchArticles(queryString);
-
-  return {
-    props: {
-      categories: cateogry.data,
-      articles: {
-        items: articles.data,
-        pagination: articles.meta.pagination,
+      filters: {
+        title: {
+          $containsi: query.search,
+        },
       },
-    },
-  };
-};
+    };
+
+    // if (query.search) {
+    //   options.filters = {
+    //     body: {
+    //       $containsi: query.search,
+    //     },
+    //   };
+    // }
+    const queryString = qs.stringify(options);
+
+    const { data: category }: AxiosResponse<CollectionTypes<Category[]>> =
+      await fetchCategories();
+    store.dispatch(allCategories(category));
+
+    const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
+      await fetchArticles(queryString);
+    store.dispatch(allArticles(articles));
+
+    return {
+      props: {
+        categories: category.data,
+        articles: {
+          items: articles.data,
+          pagination: articles.meta.pagination,
+        },
+      },
+    };
+  });

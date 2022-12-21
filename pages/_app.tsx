@@ -7,8 +7,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import NavbarResponsive from "../components/NavbarResponsive";
 import NextNProgress from "nextjs-progressbar";
+import { Provider } from "react-redux";
+// import { store } from "../redux/store";
+import { wrapper } from "../redux/store";
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, ...rest }: AppProps) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
   const [navOpen, setNavOpen] = useState(false);
 
   return (
@@ -24,11 +28,15 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <NextNProgress color="#9762f5" />
       <div className="container">
-        <NavbarResponsive setNavOpen={setNavOpen} navOpen={navOpen} />
-        <Navbar setNavOpen={setNavOpen} />
-        <Component {...pageProps} />
-        <Footer />
+        <Provider store={store}>
+          <NavbarResponsive setNavOpen={setNavOpen} navOpen={navOpen} />
+          <Navbar setNavOpen={setNavOpen} />
+          <Component {...props.pageProps} />
+          <Footer />
+        </Provider>
       </div>
     </>
   );
-}
+};
+
+export default App;

@@ -9,10 +9,12 @@ import Articles from "../../components/Articles";
 import Categories from "../../components/Categories";
 import Paginate from "../../components/Paginate";
 import { fetchArticles, fetchCategories } from "../../http";
-import { Article, Category, CollectionTypes, Pagination } from "../../types";
+import { Article, CollectionTypes, Pagination } from "../../types";
+import { useSelector } from "react-redux";
+import { categorySubscribe } from "../../redux/categorySlice";
+import { wrapper } from "../../redux/store";
 
 interface propsType {
-  categories: Category[];
   articles: {
     items: Article[];
     pagination: Pagination;
@@ -20,10 +22,12 @@ interface propsType {
   slug: string;
 }
 
-const category = ({ categories, articles, slug }: propsType) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+const Category = ({ articles, slug }: propsType) => {
   const router = useRouter();
-  const formatTitle = (slug: string) => {
+
+  const categoryFromStore = useSelector(categorySubscribe);
+
+  const formatTitle = (slug: any) => {
     let splitted = slug.split("-");
     if (Number.isNaN(parseFloat(splitted[1]))) {
       const tempTitle = splitted.join(" ");
@@ -45,7 +49,7 @@ const category = ({ categories, articles, slug }: propsType) => {
       </Head>
       <div className="">
         <Categories
-          categories={categories}
+          categories={categoryFromStore.categories.data}
           handleSearch={debounce(handleSearch, 400)}
         />
         <Articles articles={articles.items} />
@@ -59,40 +63,37 @@ const category = ({ categories, articles, slug }: propsType) => {
   );
 };
 
-export default category;
+export default Category;
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const options = {
-    populate: ["author.avatar"],
-    sort: ["id:desc"],
-    filters: {
-      category: {
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async ({ query }) => {
+    const options = {
+      populate: ["author.avatar"],
+      sort: ["id:desc"],
+      filters: {
+        category: {
+          slug: query.categorySlug,
+        },
+        title: {
+          $containsi: query.search,
+        },
+      },
+      pagination: {
+        page: query.page ? query.page : 1,
+        pageSize: 1,
+      },
+    };
+    const queryString = qs.stringify(options);
+
+    const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
+      await fetchArticles(queryString);
+    return {
+      props: {
+        articles: {
+          items: articles.data,
+          pagination: articles.meta.pagination,
+        },
         slug: query.categorySlug,
       },
-      title: {
-        $containsi: query.search,
-      },
-    },
-    pagination: {
-      page: query.page ? query.page : 1,
-      pageSize: 1,
-    },
-  };
-  const queryString = qs.stringify(options);
-
-  const { data: category }: AxiosResponse<CollectionTypes<Category[]>> =
-    await fetchCategories();
-
-  const { data: articles }: AxiosResponse<CollectionTypes<Article[]>> =
-    await fetchArticles(queryString);
-  return {
-    props: {
-      categories: category.data,
-      articles: {
-        items: articles.data,
-        pagination: articles.meta.pagination,
-      },
-      slug: query.categorySlug,
-    },
-  };
-};
+    };
+  });
