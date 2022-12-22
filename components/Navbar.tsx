@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { FaBars } from "react-icons/fa";
 
@@ -7,6 +8,7 @@ interface propType {
   setNavOpen: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 const Navbar = ({ setNavOpen }: propType) => {
+  const router = useRouter();
   return (
     <nav>
       <Link href="/" className="d-flex align-items-center">
@@ -34,8 +36,10 @@ const Navbar = ({ setNavOpen }: propType) => {
         </li>
       </ul>
       <div className="nav-btn">
-        <button className="btn">Log In</button>
-        <button className="btn btn-sign">Sign Up</button>
+        <button className="btn btn-sign" onClick={() => router.push("/login")}>
+          Log In
+        </button>
+        {/* <button className="btn btn-sign">Sign Up</button> */}
       </div>
     </nav>
   );
