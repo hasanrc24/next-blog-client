@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { API_URL } from "../config/config";
 import { Article } from "../types";
 import { formatDate } from "../utils";
 
@@ -16,7 +17,7 @@ const ArticleCard = ({ article }: propsType) => {
       </h4>
       <div className="my-3">
         <Image
-          src={`http://localhost:1337${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
+          src={`${API_URL}${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
           alt="avatar"
           height={30}
           width={30}

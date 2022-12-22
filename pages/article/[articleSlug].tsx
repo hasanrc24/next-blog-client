@@ -14,6 +14,7 @@ import {
   FaLinkedinIn,
   FaTwitter,
 } from "react-icons/fa";
+import { API_URL } from "../../config/config";
 
 interface propsType {
   singleArticle: Article;
@@ -33,7 +34,7 @@ const articleSlug = ({ singleArticle }: propsType) => {
           <h4>{title}</h4>
           <div className="py-2">
             <Image
-              src={`http://localhost:1337${singleArticle.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
+              src={`${API_URL}${singleArticle.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
               alt="avatar"
               height={30}
               width={30}
@@ -51,7 +52,7 @@ const articleSlug = ({ singleArticle }: propsType) => {
             {singleArticle.attributes.image?.data && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={`http://localhost:1337${singleArticle.attributes.image?.data?.attributes?.url}`}
+                src={`${API_URL}${singleArticle.attributes.image?.data?.attributes?.url}`}
                 alt="body image"
                 className="img-fluid"
                 style={{ width: "100%" }}

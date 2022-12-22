@@ -10,9 +10,8 @@ import Paginate from "../components/Paginate";
 import { useRouter } from "next/router";
 import debounce from "lodash.debounce";
 import { wrapper } from "../redux/store";
-import { allArticles, articleSubscribe } from "../redux/articleSlice";
-import { allCategories, categorySubscribe } from "../redux/categorySlice";
-import { useSelector } from "react-redux";
+import { allArticles } from "../redux/articleSlice";
+import { allCategories } from "../redux/categorySlice";
 
 interface propsType {
   categories: Category[];
@@ -23,9 +22,6 @@ interface propsType {
 }
 export default function Home({ categories, articles }: propsType) {
   const router = useRouter();
-  // const dispatch = useDispatch();
-  const articlesFromStore = useSelector(articleSubscribe);
-  const categoryFromStore = useSelector(categorySubscribe);
 
   const handleSearch = (e: any) => {
     router.push(`/?search=${e.target.value}`);
@@ -39,10 +35,10 @@ export default function Home({ categories, articles }: propsType) {
       </Head>
 
       <Categories
-        categories={categoryFromStore.categories.data}
+        categories={categories}
         handleSearch={debounce(handleSearch, 400)}
       />
-      <Articles articles={articlesFromStore.articles.data} />
+      <Articles articles={articles.items} />
       <Paginate
         page={articles.pagination.page}
         pageCount={articles.pagination.pageCount}

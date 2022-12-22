@@ -2,10 +2,12 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import articleReducer from '../redux/articleSlice';
 import categoryReducer from '../redux/categorySlice';
+import userReducer from '../redux/userSlice';
 
 const rootReducer = combineReducers({
     articleReducer,
-    categoryReducer
+    categoryReducer,
+    userReducer
 });
 
 const masterReducer = (state: any, action: any) => {
