@@ -4,25 +4,34 @@ import React, { useState } from "react";
 import { API_URL } from "../config/config";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../redux/userSlice";
+import { setUserCookie, unsetUserCookie } from "../config/auth";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({
+    identifier: "",
+    password: "",
+  });
   const dispatch = useDispatch();
+
+  const handleChange = (e: any) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
     const loginInfo = {
-      identifier: username,
-      password: password,
+      identifier: userData.identifier,
+      password: userData.password,
     };
     try {
       const login = await axios.post(`${API_URL}/api/auth/local`, loginInfo);
       dispatch(userInfo(login.data));
+      setUserCookie(login.data);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="mx-auto login-comp my-5">
       <Head>
@@ -36,20 +45,22 @@ const Login = () => {
           <input
             type="email"
             placeholder="Your email"
+            name="identifier"
             id="form2Example1"
             className="form-control"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
+            onChange={handleChange}
+            value={userData.identifier}
           />
         </div>
         <div className="form-outline mb-4">
           <input
             type="password"
+            name="password"
             placeholder="Password"
             id="form2Example2"
             className="form-control"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            onChange={handleChange}
+            value={userData.password}
           />
         </div>
 

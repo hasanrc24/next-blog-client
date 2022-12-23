@@ -187,7 +187,17 @@ footer{
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-
+.profile-btn{
+  font-weight: 500;
+  margin-right: 1rem;
+  color: #9762f5;
+}
+.profile-btn:hover{
+  color: #6e2edb;
+}
+.res-ul{
+  list-style-type: none;
+}
 @media screen and (max-width: 768px) {
   .bars{
   display: block;
