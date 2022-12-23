@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { API_URL } from "../config/config";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../redux/userSlice";
-import { setUserCookie, unsetUserCookie } from "../config/auth";
+import { setUserCookie, verifyUser } from "../config/auth";
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -25,8 +25,8 @@ const Login = () => {
     };
     try {
       const login = await axios.post(`${API_URL}/api/auth/local`, loginInfo);
-      dispatch(userInfo(login.data));
       setUserCookie(login.data);
+      (await verifyUser()) && dispatch(userInfo(login.data));
     } catch (error) {
       console.log(error);
     }

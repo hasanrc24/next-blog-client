@@ -1,23 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { userInfo } from "../redux/userSlice";
+import { userInfo, userSubscribe } from "../redux/userSlice";
 import React, { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserTokenFromCookie, unsetUserCookie } from "../config/auth";
-import { userSubscribe } from "../redux/userSlice";
+import { unsetUserCookie } from "../config/auth";
 
 interface propType {
   setNavOpen: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 const Navbar = ({ setNavOpen }: propType) => {
-  const router = useRouter();
   const dispatch = useDispatch();
-  const jwt = getUserTokenFromCookie();
   const [hydrated, setHydrated] = useState(false);
-
-  const userDataRedux = useSelector(userSubscribe);
+  const authenticatedUser = useSelector(userSubscribe);
+  const user = authenticatedUser?.user?.user?.username;
 
   const handleLogout = () => {
     unsetUserCookie();
@@ -55,7 +51,7 @@ const Navbar = ({ setNavOpen }: propType) => {
       </ul>
       <div className="nav-btn">
         {hydrated &&
-          (jwt ? (
+          (user ? (
             <div>
               <Link href="/profile" className="profile-btn">
                 Profile

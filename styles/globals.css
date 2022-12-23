@@ -198,6 +198,9 @@ footer{
 .res-ul{
   list-style-type: none;
 }
+.res-nav-profile{
+  color: #9762f5;
+}
 @media screen and (max-width: 768px) {
   .bars{
   display: block;
