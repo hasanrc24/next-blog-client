@@ -1,17 +1,20 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Head from "next/head";
 import React, { useState } from "react";
 import { API_URL } from "../config/config";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../redux/userSlice";
 import { setUserCookie, verifyUser } from "../config/auth";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const [userData, setUserData] = useState({
     identifier: "",
     password: "",
   });
+  const [error, setError] = useState<any>();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleChange = (e: any) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -26,9 +29,15 @@ const Login = () => {
     try {
       const login = await axios.post(`${API_URL}/api/auth/local`, loginInfo);
       setUserCookie(login.data);
-      (await verifyUser()) && dispatch(userInfo(login.data));
+      (await verifyUser()) &&
+        (dispatch(userInfo(login.data)), router.push("/"));
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.error.message);
+        setTimeout(() => {
+          setError(undefined);
+        }, 2000);
+      }
     }
   };
 
@@ -74,6 +83,7 @@ const Login = () => {
           </p>
         </div>
       </form>
+      {error && <p className="text-center">{error}</p>}
     </div>
   );
 };

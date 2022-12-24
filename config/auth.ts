@@ -37,6 +37,15 @@ export const getUserTokenFromCookie = () => {
     return Cookies.get('jwt')
 }
 
+export const getTokenFromServerCookie = (req: any) => {
+    if(!req.headers.cookie || ''){
+        return undefined;
+    }
+    const serverCookieJwt = req.headers.cookie;
+    const jwt = serverCookieJwt.split(";")[0].split("=")[1];
+    return jwt;
+}
+
 export const verifyUser = async() => {
     const jwt = getUserTokenFromCookie();
     if(jwt){
@@ -46,7 +55,6 @@ export const verifyUser = async() => {
                     Authorization: `Bearer ${jwt}`
                 }
             })
-            Router.push('/');
             Cookies.set('username', verified.data.username);
             return true
         } catch (error) {
