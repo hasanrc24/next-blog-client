@@ -4,7 +4,7 @@ import { userInfo, userSubscribe } from "../redux/userSlice";
 import React, { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { unsetUserCookie } from "../config/auth";
+import { getUserNameFromCookie, unsetUserCookie } from "../config/auth";
 import { useRouter } from "next/router";
 
 interface propType {
@@ -14,13 +14,13 @@ const Navbar = ({ setNavOpen }: propType) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [hydrated, setHydrated] = useState(false);
-  const authenticatedUser = useSelector(userSubscribe);
-  const user = authenticatedUser?.user?.user?.username;
+  // const authenticatedUser = useSelector(userSubscribe);
+  // const user = authenticatedUser?.user?.user?.username;
+  const user = getUserNameFromCookie();
 
   const handleLogout = () => {
     unsetUserCookie();
     dispatch(userInfo({}));
-    // router.push("/login");
   };
 
   useEffect(() => {

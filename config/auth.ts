@@ -24,7 +24,7 @@ export const unsetUserCookie = () => {
     Cookies.remove('username');
     Cookies.remove('jwt');
 
-    Router.push('/');
+    Router.push('/login');
 }
 
 export const getUserNameFromCookie = () => {

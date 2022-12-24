@@ -10,6 +10,7 @@ import NextNProgress from "nextjs-progressbar";
 import { Provider } from "react-redux";
 // import { store } from "../redux/store";
 import { wrapper } from "../redux/store";
+import { getTokenFromServerCookie } from "../config/auth";
 
 const App = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest);
