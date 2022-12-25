@@ -68,6 +68,7 @@ export interface Article{
                     lastName: string,
                     username: string,
                     avatar: Avatar
+                    avatar2: number
                 }
             }
         }

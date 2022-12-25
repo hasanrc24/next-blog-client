@@ -10,15 +10,24 @@ interface propsType {
 }
 const ArticleCard = ({ article }: propsType) => {
   const { title, body } = article.attributes;
+  console.log(article);
   return (
     <div>
       <h4>
         <Link href={`/article/${article.attributes.slug}`}>{title}</Link>
       </h4>
       <div className="my-3">
-        {article.attributes.author.data.attributes.avatar.data && (
+        {article.attributes.author.data.attributes.avatar2 === null ? (
           <Image
-            src={`${API_URL}${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
+            src="/r.png"
+            alt="avatar"
+            className="rounded"
+            height={30}
+            width={30}
+          />
+        ) : (
+          <Image
+            src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${article.attributes.author.data.attributes.avatar2}`}
             alt="avatar"
             height={30}
             width={30}

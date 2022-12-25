@@ -1,14 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
-import axios from "axios";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { env } from "process";
 import React, { useState } from "react";
 import { getTokenFromServerCookie } from "../config/auth";
 import { API_URL } from "../config/config";
 
 const Profile = ({ data }: any) => {
-  console.log(data);
+  // console.log(data);
   const router = useRouter();
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
@@ -18,22 +16,26 @@ const Profile = ({ data }: any) => {
     setEdit(true);
   };
   const handleImageSelect = (e: any) => {
-    setImageData(e.target.files[0]);
+    const tempImg = e.target.files[0];
+    setImageData(tempImg);
   };
   const handleSave = async () => {
     const formData = new FormData();
-    formData.append("inputFile", imageData);
+    const file = imageData;
+    formData.append("inputFile", file);
     formData.append("user_id", data.id);
     try {
-      const responseData = await axios.post("/api/upload", {
+      const response = await fetch("/api/upload", {
+        method: "POST",
         body: formData,
       });
+      const responseData = await response.json();
       console.log(responseData);
-      if (responseData.statusText === "success") {
+      if (responseData.message === "success") {
         router.reload();
       }
     } catch (error) {
-      console.log(error);
+      console.error(JSON.stringify(error));
     }
     setEdit(false);
   };
@@ -50,20 +52,24 @@ const Profile = ({ data }: any) => {
             <div className="col-lg-4">
               <div className="card mb-4">
                 <div className="card-body text-center">
-                  {data?.avatar2 === null ? (
-                    <img
-                      src="ava3.webp"
-                      alt="avatar"
-                      className="rounded-circle img-fluid"
-                      style={{ width: "150px" }}
-                    />
-                  ) : (
-                    <img
-                      src={`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${avatar2}`}
-                      alt="avatar"
-                    />
-                  )}
-
+                  <div className="prof-img-div">
+                    {data?.avatar2 === null ? (
+                      <img
+                        src="R.png"
+                        alt="avatar"
+                        className="img-fluid"
+                        style={{ width: "150px" }}
+                      />
+                    ) : (
+                      <Image
+                        src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${avatar2}`}
+                        alt="avatar"
+                        height={100}
+                        width={100}
+                        className="img-fluid"
+                      />
+                    )}
+                  </div>
                   <h5 className="my-3">{firstName + " " + lastName}</h5>
                   <p className="text-muted mb-1">@{username}</p>
                   <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
@@ -92,6 +98,7 @@ const Profile = ({ data }: any) => {
                     />
                     <button
                       className="btn res-nav-btn mt-3"
+                      type="submit"
                       onClick={handleSave}
                     >
                       Save

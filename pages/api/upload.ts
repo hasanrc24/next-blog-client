@@ -11,12 +11,13 @@ cloudinary.v2.config({
 
 export const config = {
   api: {
-    bodyParse: false
+    bodyParser: false
   }
 };
 
 export default async function upload(req:any, res:any){
   if(req.method === 'POST'){
+    
     const data:any = await new Promise((resolve, reject) => {
       const form = new IncomingForm();
       form.parse(req, (err, fields, files) => {
@@ -44,9 +45,10 @@ export default async function upload(req:any, res:any){
         })
       })
       const data = await userResponse.json();
+      console.log(data);
       return res.json({message: 'success'})
     } catch (error) {
-      console.log(error)
+      console.log(JSON.stringify(error));
     }
   }
   else{

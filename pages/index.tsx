@@ -62,14 +62,6 @@ export const getServerSideProps: GetServerSideProps =
         },
       },
     };
-
-    // if (query.search) {
-    //   options.filters = {
-    //     body: {
-    //       $containsi: query.search,
-    //     },
-    //   };
-    // }
     const queryString = qs.stringify(options);
 
     const { data: category }: AxiosResponse<CollectionTypes<Category[]>> =
