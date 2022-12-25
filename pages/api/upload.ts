@@ -1,0 +1,55 @@
+import cloudinary from 'cloudinary';
+import {IncomingForm} from 'formidable';
+import { getTokenFromServerCookie } from '../../config/auth';
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true
+});
+
+export const config = {
+  api: {
+    bodyParse: false
+  }
+};
+
+export default async function upload(req:any, res:any){
+  if(req.method === 'POST'){
+    const data:any = await new Promise((resolve, reject) => {
+      const form = new IncomingForm();
+      form.parse(req, (err, fields, files) => {
+        if((err)) return reject(err);
+        resolve({fields, files});
+      });
+    });
+
+    const file = data?.files?.inputFile.filepath;
+    const {user_id} = data?.fields;
+    try {
+      const response = await cloudinary.v2.uploader.upload(file, {
+        public_id: user_id,
+      });
+      const {public_id} = response;
+      const jwt = getTokenFromServerCookie(req);
+      const userResponse = await fetch(`${process.env.API_BASE_URL}/api/users/${user_id}`,{
+        method: 'PUT',
+        headers:{
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`
+        },
+        body: JSON.stringify({
+          avatar2: public_id
+        })
+      })
+      const data = await userResponse.json();
+      return res.json({message: 'success'})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  else{
+    res.status(403).send('Invalid method')
+  }
+}

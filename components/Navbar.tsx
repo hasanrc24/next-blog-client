@@ -64,9 +64,14 @@ const Navbar = ({ setNavOpen }: propType) => {
               </button>
             </div>
           ) : (
-            <Link href="/login" className="btn btn-sign">
-              Log in
-            </Link>
+            <>
+              <Link href="/login" className="btn">
+                Login
+              </Link>
+              <Link href="/register" className="btn btn-sign ms-2">
+                Sign up
+              </Link>
+            </>
           ))}
       </div>
     </nav>

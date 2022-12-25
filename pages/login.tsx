@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import Head from "next/head";
 import React, { useState } from "react";
 import { API_URL } from "../config/config";
@@ -6,13 +6,14 @@ import { useDispatch } from "react-redux";
 import { userInfo } from "../redux/userSlice";
 import { setUserCookie, verifyUser } from "../config/auth";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Login = () => {
   const [userData, setUserData] = useState({
     identifier: "",
     password: "",
   });
-  const [error, setError] = useState<any>();
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -35,7 +36,7 @@ const Login = () => {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data.error.message);
         setTimeout(() => {
-          setError(undefined);
+          setError("");
         }, 2000);
       }
     }
@@ -52,8 +53,8 @@ const Login = () => {
       <form onSubmit={handleLogin}>
         <div className="form-outline mb-4">
           <input
-            type="email"
-            placeholder="Your email"
+            type="text"
+            placeholder="username or password"
             name="identifier"
             id="form2Example1"
             className="form-control"
@@ -74,12 +75,12 @@ const Login = () => {
         </div>
 
         <button type="submit" className="btn btn-paginate mb-4">
-          Sign in
+          Login
         </button>
 
         <div className="text-center">
           <p>
-            Not a member? <a href="#!">Register</a>
+            Not a member? <Link href="/register">Sign up</Link>
           </p>
         </div>
       </form>

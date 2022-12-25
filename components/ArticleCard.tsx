@@ -16,13 +16,15 @@ const ArticleCard = ({ article }: propsType) => {
         <Link href={`/article/${article.attributes.slug}`}>{title}</Link>
       </h4>
       <div className="my-3">
-        <Image
-          src={`${API_URL}${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
-          alt="avatar"
-          height={30}
-          width={30}
-          className="rounded"
-        />
+        {article.attributes.author.data.attributes.avatar.data && (
+          <Image
+            src={`${API_URL}${article.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
+            alt="avatar"
+            height={30}
+            width={30}
+            className="rounded"
+          />
+        )}
         <span className="mx-2 fw-bold">
           {article.attributes.author.data.attributes.firstName +
             " " +

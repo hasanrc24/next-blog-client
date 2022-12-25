@@ -55,6 +55,9 @@ nav{
   border: none;
   color: white;
 }
+.btn-sign:hover{
+  background-color: #7f46e2;
+}
 a{
   text-decoration: none;
   color: black;
@@ -105,6 +108,12 @@ ul{
   color: white;
   background-color: #9762f5;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+.res-nav-btn:hover {
+  background-color: #7f46e2;
+  color: white;
+  transition: all .3s ease;
+  transform: translateY(-2px);
 }
 
 footer{
