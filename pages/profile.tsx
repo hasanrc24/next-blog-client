@@ -6,8 +6,7 @@ import { getTokenFromServerCookie } from "../config/auth";
 import { API_URL } from "../config/config";
 
 const Profile = ({ data }: any) => {
-  // console.log(data);
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
   const { firstName, lastName, username, email, avatar2 } = data;
@@ -20,6 +19,7 @@ const Profile = ({ data }: any) => {
     setImageData(tempImg);
   };
   const handleSave = async () => {
+    setLoading(true);
     const formData = new FormData();
     const file = imageData;
     formData.append("inputFile", file);
@@ -30,12 +30,12 @@ const Profile = ({ data }: any) => {
         body: formData,
       });
       const responseData = await response.json();
-      console.log(responseData);
       if (responseData.message === "success") {
-        router.reload();
+        setLoading(false);
       }
     } catch (error) {
       console.error(JSON.stringify(error));
+      setLoading(false);
     }
     setEdit(false);
   };
@@ -66,7 +66,7 @@ const Profile = ({ data }: any) => {
                         alt="avatar"
                         height={100}
                         width={100}
-                        className="img-fluid"
+                        // className="img-fluid"
                       />
                     )}
                   </div>
@@ -97,11 +97,19 @@ const Profile = ({ data }: any) => {
                       onChange={handleImageSelect}
                     />
                     <button
-                      className="btn res-nav-btn mt-3"
+                      className={`btn res-nav-btn mt-3 ${
+                        loading && "disabled"
+                      }`}
                       type="submit"
                       onClick={handleSave}
                     >
                       Save
+                      {loading && (
+                        <div
+                          className="spinner-border spinner-border-sm ms-2"
+                          role="status"
+                        ></div>
+                      )}
                     </button>
                   </div>
                 ) : (
