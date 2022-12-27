@@ -4,6 +4,9 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ["localhost", "res.cloudinary.com"],
+    minimumCacheTTL: 60,
+    disableStaticImages: true,
+    writeToCacheDir: false,
   },
 };
 

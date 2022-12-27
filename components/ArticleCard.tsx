@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { API_URL } from "../config/config";
 import { Article } from "../types";
 import { formatDate } from "../utils";
 
@@ -10,24 +9,23 @@ interface propsType {
 }
 const ArticleCard = ({ article }: propsType) => {
   const { title, body } = article.attributes;
-  console.log(article);
   return (
     <div>
       <h4>
         <Link href={`/article/${article.attributes.slug}`}>{title}</Link>
       </h4>
       <div className="my-3">
-        {article.attributes.author.data.attributes.avatar2 === null ? (
+        {article.attributes.author.data.attributes.avatar === null ? (
           <Image
-            src="/r.png"
+            src="/R.png"
             alt="avatar"
             className="rounded"
             height={30}
             width={30}
           />
         ) : (
-          <Image
-            src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${article.attributes.author.data.attributes.avatar2}`}
+          <img
+            src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${article.attributes.author.data.attributes.avatar}`}
             alt="avatar"
             height={30}
             width={30}

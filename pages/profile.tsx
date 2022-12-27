@@ -9,7 +9,7 @@ const Profile = ({ data }: any) => {
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
-  const { firstName, lastName, username, email, avatar2 } = data;
+  const { firstName, lastName, username, email, avatar } = data;
 
   const handlePhotoEdit = () => {
     setEdit(true);
@@ -53,20 +53,20 @@ const Profile = ({ data }: any) => {
               <div className="card mb-4">
                 <div className="card-body text-center">
                   <div className="prof-img-div">
-                    {data?.avatar2 === null ? (
+                    {avatar === null || avatar === "default" ? (
                       <img
                         src="R.png"
                         alt="avatar"
                         className="img-fluid"
-                        style={{ width: "150px" }}
-                      />
-                    ) : (
-                      <Image
-                        src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${avatar2}`}
-                        alt="avatar"
                         height={100}
                         width={100}
-                        // className="img-fluid"
+                      />
+                    ) : (
+                      <img
+                        src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${avatar}`}
+                        alt={username}
+                        height={100}
+                        width={100}
                       />
                     )}
                   </div>

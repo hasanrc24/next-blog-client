@@ -41,7 +41,7 @@ export default async function upload(req:any, res:any){
           Authorization: `Bearer ${jwt}`
         },
         body: JSON.stringify({
-          avatar2: public_id
+          avatar: public_id
         })
       })
       const data = await userResponse.json();
