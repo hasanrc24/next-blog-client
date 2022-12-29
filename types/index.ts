@@ -78,5 +78,12 @@ export interface Article{
                 }
             }
         }
+        comments: {
+            data: {
+                attributes: 
+                    CommentType
+                
+            }
+        }
     }
 }

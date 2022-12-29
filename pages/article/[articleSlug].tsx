@@ -22,10 +22,12 @@ interface propsType {
   singleArticle: Article;
   jwt: string;
   comments: CommentType[];
+  user: any;
 }
-const articleSlug = ({ singleArticle, jwt, comments }: propsType) => {
+const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
   const { title, body } = singleArticle.attributes;
   const avatar = singleArticle.attributes.author.data.attributes.avatar;
+  console.log(singleArticle);
   return (
     <>
       <Head>
@@ -74,7 +76,12 @@ const articleSlug = ({ singleArticle, jwt, comments }: propsType) => {
             )}
             <p className="pt-3">{body}</p>
           </div>
-          <Comment jwt={jwt} comments={comments} />
+          <Comment
+            jwt={jwt}
+            comments={comments}
+            articleId={singleArticle.id}
+            user={user}
+          />
         </div>
         <div className="col-md-4">
           <h5>Signup to our newsletter</h5>
@@ -118,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
 }) => {
   const options = {
-    populate: ["image", "author.avatar"],
+    populate: ["image", "author.avatar", "comments"],
     filters: {
       slug: {
         $eq: query.articleSlug,
@@ -134,11 +141,19 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const { data: comments }: AxiosResponse<CollectionTypes<CommentType[]>> =
     await fetchComments();
+
+  const res = await fetch(`${API_URL}/api/users/me`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  const verifiedUser = await res.json();
   return {
     props: {
       singleArticle: article.data[0],
       jwt: jwt,
-      comments: comments.data,
+      comments: article.data[0].attributes.comments.data,
+      user: verifiedUser,
     },
   };
 };
