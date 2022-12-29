@@ -1,12 +1,12 @@
-import { AxiosResponse } from "axios";
+import axios, { Axios, AxiosResponse } from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import qs from "qs";
 import React from "react";
-import { fetchArticles } from "../../http";
-import { CollectionTypes, Article } from "../../types";
+import { fetchArticles, fetchComments } from "../../http";
+import { CollectionTypes, Article, CommentType } from "../../types";
 import { formatDate } from "../../utils/index";
 import {
   FaFacebookF,
@@ -15,13 +15,17 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { API_URL } from "../../config/config";
+import Comment from "../../components/Comment";
+import { getTokenFromServerCookie } from "../../config/auth";
 
 interface propsType {
   singleArticle: Article;
+  jwt: string;
+  comments: CommentType[];
 }
-const articleSlug = ({ singleArticle }: propsType) => {
+const articleSlug = ({ singleArticle, jwt, comments }: propsType) => {
   const { title, body } = singleArticle.attributes;
-  console.log(singleArticle.attributes);
+  const avatar = singleArticle.attributes.author.data.attributes.avatar;
   return (
     <>
       <Head>
@@ -33,13 +37,23 @@ const articleSlug = ({ singleArticle }: propsType) => {
         <div className="col-md-8">
           <h4>{title}</h4>
           <div className="py-2">
-            <Image
-              src={`${API_URL}${singleArticle.attributes.author.data.attributes.avatar.data.attributes.formats.thumbnail.url}`}
-              alt="avatar"
-              height={30}
-              width={30}
-              className="rounded"
-            />
+            {avatar === null || avatar === "default" ? (
+              <Image
+                src="/R.png"
+                alt="avatar"
+                height={30}
+                width={30}
+                className="rounded"
+              />
+            ) : (
+              <img
+                src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${avatar}`}
+                alt={singleArticle.attributes.author.data.attributes.username}
+                height={30}
+                width={30}
+                className="rounded"
+              />
+            )}
             <span className="mx-2 fw-bold">
               {singleArticle.attributes.author.data.attributes.firstName}{" "}
               {singleArticle.attributes.author.data.attributes.lastName}
@@ -60,6 +74,7 @@ const articleSlug = ({ singleArticle }: propsType) => {
             )}
             <p className="pt-3">{body}</p>
           </div>
+          <Comment jwt={jwt} comments={comments} />
         </div>
         <div className="col-md-4">
           <h5>Signup to our newsletter</h5>
@@ -98,7 +113,10 @@ const articleSlug = ({ singleArticle }: propsType) => {
 
 export default articleSlug;
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
   const options = {
     populate: ["image", "author.avatar"],
     filters: {
@@ -111,9 +129,16 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const { data: article }: AxiosResponse<CollectionTypes<Article[]>> =
     await fetchArticles(queryString);
+
+  const jwt = getTokenFromServerCookie(req);
+
+  const { data: comments }: AxiosResponse<CollectionTypes<CommentType[]>> =
+    await fetchComments();
   return {
     props: {
       singleArticle: article.data[0],
+      jwt: jwt,
+      comments: comments.data,
     },
   };
 };

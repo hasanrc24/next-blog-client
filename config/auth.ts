@@ -39,7 +39,7 @@ export const getUserTokenFromCookie = () => {
 
 export const getTokenFromServerCookie = (req: any) => {
     if(!req.headers.cookie || ''){
-        return undefined;
+        return null;
     }
     const serverCookieJwt = req.headers.cookie;
     const jwt = serverCookieJwt.split(";")[0].split("=")[1];

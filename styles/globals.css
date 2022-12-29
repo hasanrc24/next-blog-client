@@ -217,6 +217,10 @@ footer{
   width: 100px;
   margin: auto;
 }
+.cmnt-btn{
+  background-color: #9762f5;
+  color: white;
+}
 @media screen and (max-width: 768px) {
   .bars{
   display: block;

@@ -1,5 +1,3 @@
-import { API_URL } from './../config/config';
-import { getUserTokenFromCookie } from './../config/auth';
 import axios from "axios";
 const api = axios.create({
     baseURL: process.env.API_BASE_URL,
@@ -14,6 +12,10 @@ export const fetchCategories = async() => {
 
 export const fetchArticles = async(queryString: string) => {
     return api.get(`/api/articles?${queryString}`);
+}
+
+export const fetchComments = async() =>{
+    return api.get('/api/comments')
 }
 
 // export const getVerifiedUser = async(jwt:any) => {

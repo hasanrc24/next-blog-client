@@ -16,6 +16,17 @@ export interface CategoryMeta{
 export interface CollectionTypes<T>{
     data: T,
     meta: CategoryMeta
+    comments: CommentType
+}
+
+export interface CommentType{
+    id: number;
+    attributes:{
+        comment : string,
+        commenter: string,
+        avatar: string | null
+        createdAt: string
+    }
 }
 
 export interface Image{
@@ -35,11 +46,7 @@ export interface Image{
 export interface Avatar{
     data:{
         attributes:{
-            formats:{
-                thumbnail:{
-                    url: string
-                }
-            }
+                avatar: string
         }
     }
 }
@@ -67,8 +74,7 @@ export interface Article{
                     firstName: string,
                     lastName: string,
                     username: string,
-                    avatar: Avatar
-                    avatar2: number
+                    avatar: string | null
                 }
             }
         }
