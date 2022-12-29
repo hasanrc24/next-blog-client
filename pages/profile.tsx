@@ -2,16 +2,20 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { createDispatchHook, useDispatch } from "react-redux";
 import { getTokenFromServerCookie } from "../config/auth";
 import { API_URL } from "../config/config";
+import { userInfo } from "../redux/userSlice";
 
 const Profile = ({ data }: any) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
   const { firstName, lastName, username, email, avatar } = data;
 
-  const handlePhotoEdit = () => {
+  dispatch(userInfo(data));
+  const handleProfileEdit = () => {
     setEdit(true);
   };
   const handleImageSelect = (e: any) => {
@@ -77,14 +81,6 @@ const Profile = ({ data }: any) => {
                 </div>
               </div>
               <div className=" mb-4 mb-lg-0">
-                {/* <div className="card-body p-0">
-                  <ul className="list-group list-group-flush rounded-3">
-                    <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                      <i className="fas fa-globe fa-lg text-warning"></i>
-                      <p className="mb-0">https://www.nextblog.com</p>
-                    </li>
-                  </ul>
-                </div> */}
                 {edit ? (
                   <div className="">
                     <label className="form-label" htmlFor="customFile">
@@ -113,7 +109,10 @@ const Profile = ({ data }: any) => {
                     </button>
                   </div>
                 ) : (
-                  <button className="btn res-nav-btn" onClick={handlePhotoEdit}>
+                  <button
+                    className="btn res-nav-btn"
+                    onClick={handleProfileEdit}
+                  >
                     Edit profile
                   </button>
                 )}

@@ -7,3 +7,12 @@ export const formatDate = (date: string) => {
     })
     return formattedDate;
 }
+
+export const formatCommentDate = (date: string) => {
+    const formattedDate = new Date(date).toLocaleDateString('en-US',{
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    })
+    return formattedDate;
+}

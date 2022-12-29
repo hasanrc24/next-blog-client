@@ -1,8 +1,11 @@
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { API_URL } from "../config/config";
+import { API_URL, CLOUDINARY_URL } from "../config/config";
 import { CommentType } from "../types";
+import { formatCommentDate } from "../utils";
 
 interface propsType {
   jwt: string;
@@ -13,15 +16,18 @@ interface propsType {
 const Comment = ({ jwt, comments, articleId, user }: propsType) => {
   // console.log(comments);
   const [commentValue, setCommentValue] = useState("");
+  const router = useRouter();
 
   const handleCommentSubmit = async (e: any) => {
     e.preventDefault();
 
     const commentData = {
-      comment: commentValue,
-      commenter: `${user.firstName + " " + user.lastName}`,
-      avatar: user.avatar,
-      article: articleId,
+      data: {
+        comment: commentValue,
+        commenter: `${user.firstName + " " + user.lastName}`,
+        avatar: user.avatar,
+        article: articleId,
+      },
     };
     try {
       await axios.post(`${API_URL}/api/comments`, commentData, {
@@ -29,14 +35,8 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      // await fetch(`${API_URL}/api/comments`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${jwt}`,
-      //   },
-      //   body: JSON.stringify(commentData),
-      // });
+      setCommentValue("");
+      router.reload();
     } catch (error) {
       console.log(error);
     }
@@ -45,63 +45,81 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
     <section>
       <div className="row pt-4">
         <div className="col-md-12 col-lg-10">
+          <p className="pb-1" style={{ fontWeight: "500" }}>
+            Comments:{" "}
+          </p>
           {comments.length !== 0 ? (
             comments?.map((com) => {
+              const { avatar, comment, commenter, createdAt } = com.attributes;
               return (
-                <div key={com.id} className="card-body">
+                <div key={com.id}>
                   <div className="d-flex flex-start align-items-center">
-                    <img
-                      className="rounded-circle shadow-1-strong me-3"
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp"
-                      alt="avatar"
-                      width="45"
-                      height="45"
-                    />
-                    <div>
-                      <h6 className="fw-bold text-primary mb-1">
-                        Lily Coleman
-                      </h6>
+                    {avatar === null || avatar === "default" ? (
+                      <Image
+                        src="/R.png"
+                        alt="avatar"
+                        className="rounded-circle"
+                        height={45}
+                        width={45}
+                      />
+                    ) : (
+                      <img
+                        src={`${CLOUDINARY_URL}${com.attributes.avatar}`}
+                        alt={user.username}
+                        height={45}
+                        width={45}
+                        className="rounded-circle"
+                      />
+                    )}
+                    <div className="ms-2">
+                      <h6 className="fw-bold mb-1">{commenter}</h6>
                       <p className="text-muted small mb-0">
-                        Shared publicly - Jan 2020
+                        {formatCommentDate(createdAt)}
                       </p>
                     </div>
                   </div>
-                  <p className="mt-3 mb-4 pb-2">{com.attributes.comment}</p>
-                  {!jwt && (
-                    <span>
-                      <Link href="/login" className="text-primary">
-                        Login
-                      </Link>{" "}
-                      to post a comment
-                    </span>
-                  )}
+                  <p className="mt-3 ps-2">{comment}</p>
                 </div>
               );
             })
           ) : (
-            <div className="">No comments yet.</div>
+            <>
+              <div className="mb-4">No comments yet.</div>
+            </>
           )}
-          {jwt && (
+          {jwt ? (
             <form
               onSubmit={handleCommentSubmit}
               className="card-footer py-3 border-0"
               style={{ backgroundColor: "#f8f9fa" }}
             >
               <div className="d-flex flex-start w-100">
-                <img
-                  className="rounded-circle shadow-1-strong me-3"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp"
-                  alt="avatar"
-                  width="40"
-                  height="40"
-                />
-                <div className="form-outline w-100">
+                {user.avatar === null || user.avatar === "default" ? (
+                  <Image
+                    src="/R.png"
+                    alt="avatar"
+                    className="rounded-circle"
+                    height={45}
+                    width={45}
+                  />
+                ) : (
+                  <img
+                    src={`${CLOUDINARY_URL}${user.avatar}`}
+                    alt={user.username}
+                    height={45}
+                    width={45}
+                    className="rounded-circle"
+                  />
+                )}
+                <div className="form-outline w-100 ms-2">
                   <textarea
                     className="form-control"
                     placeholder="Enter a comment here"
-                    rows={4}
+                    rows={3}
+                    required
                     style={{ background: "#fff" }}
                     onChange={(e) => setCommentValue(e.target.value)}
+                    value={commentValue}
                   ></textarea>
                 </div>
               </div>
@@ -111,6 +129,13 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
                 </button>
               </div>
             </form>
+          ) : (
+            <span>
+              <Link href="/login" className="text-primary">
+                Login
+              </Link>{" "}
+              to post a comment
+            </span>
           )}
         </div>
       </div>

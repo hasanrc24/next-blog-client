@@ -14,7 +14,7 @@ import {
   FaLinkedinIn,
   FaTwitter,
 } from "react-icons/fa";
-import { API_URL } from "../../config/config";
+import { API_URL, CLOUDINARY_URL } from "../../config/config";
 import Comment from "../../components/Comment";
 import { getTokenFromServerCookie } from "../../config/auth";
 
@@ -27,7 +27,7 @@ interface propsType {
 const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
   const { title, body } = singleArticle.attributes;
   const avatar = singleArticle.attributes.author.data.attributes.avatar;
-  console.log(singleArticle);
+  // console.log(singleArticle.attributes.comments.data);
   return (
     <>
       <Head>
@@ -49,7 +49,7 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
               />
             ) : (
               <img
-                src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${avatar}`}
+                src={`${CLOUDINARY_URL}${avatar}`}
                 alt={singleArticle.attributes.author.data.attributes.username}
                 height={30}
                 width={30}
@@ -81,6 +81,7 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
             comments={comments}
             articleId={singleArticle.id}
             user={user}
+            // commenter={singleArticle.attributes.comments.data}
           />
         </div>
         <div className="col-md-4">
