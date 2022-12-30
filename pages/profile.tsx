@@ -1,3 +1,4 @@
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -7,12 +8,23 @@ import { getTokenFromServerCookie } from "../config/auth";
 import { API_URL } from "../config/config";
 import { userInfo } from "../redux/userSlice";
 
-const Profile = ({ data }: any) => {
+const Profile = ({ data, jwt }: any) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
-  const { firstName, lastName, username, email, avatar } = data;
+  const { firstName, lastName, username, email, avatar, phone, address, id } =
+    data;
+
+  const [editProfile, setEditProfile] = useState({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone,
+    address: address,
+  });
+  // console.log(editProfile);
 
   dispatch(userInfo(data));
   const handleProfileEdit = () => {
@@ -28,20 +40,41 @@ const Profile = ({ data }: any) => {
     const file = imageData;
     formData.append("inputFile", file);
     formData.append("user_id", data.id);
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const responseData = await response.json();
-      if (responseData.message === "success") {
+    if (file !== null) {
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const responseData = await response.json();
+        if (responseData.message === "success") {
+          setLoading(false);
+          router.reload();
+        }
+      } catch (error) {
+        console.error(JSON.stringify(error));
         setLoading(false);
+      }
+    }
+    try {
+      const res = await axios.put(`${API_URL}/api/users/${id}`, editProfile, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      if (res.status === 200) {
+        setLoading(false);
+        router.reload();
       }
     } catch (error) {
       console.error(JSON.stringify(error));
       setLoading(false);
     }
     setEdit(false);
+  };
+
+  const editOnChange = (e: any) => {
+    setEditProfile({ ...editProfile, [e.target.name]: e.target.value });
   };
   return (
     <>
@@ -76,7 +109,7 @@ const Profile = ({ data }: any) => {
                   </div>
                   <h5 className="my-3">{firstName + " " + lastName}</h5>
                   <p className="text-muted mb-1">@{username}</p>
-                  <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                  <p className="text-muted mb-4">{address}</p>
                   <div className="d-flex justify-content-center mb-2"></div>
                 </div>
               </div>
@@ -107,6 +140,12 @@ const Profile = ({ data }: any) => {
                         ></div>
                       )}
                     </button>
+                    <button
+                      className="btn ms-2 res-nav-btn mt-3"
+                      onClick={() => setEdit(false)}
+                    >
+                      Cancel
+                    </button>
                   </div>
                 ) : (
                   <button
@@ -126,9 +165,28 @@ const Profile = ({ data }: any) => {
                       <p className="mb-0">Full Name</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">
-                        {firstName + " " + lastName}
-                      </p>
+                      {edit ? (
+                        <div className="d-flex gap-3">
+                          <input
+                            type="text"
+                            name="firstName"
+                            className="form-control w-50"
+                            value={editProfile.firstName}
+                            onChange={editOnChange}
+                          />
+                          <input
+                            type="text"
+                            name="lastName"
+                            className="form-control w-50"
+                            value={editProfile.lastName}
+                            onChange={editOnChange}
+                          />
+                        </div>
+                      ) : (
+                        <p className="text-muted mb-0">
+                          {firstName + " " + lastName}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <hr />
@@ -137,7 +195,17 @@ const Profile = ({ data }: any) => {
                       <p className="mb-0">Email</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">{email}</p>
+                      {edit ? (
+                        <input
+                          type="email"
+                          name="email"
+                          className="form-control"
+                          value={editProfile.email}
+                          onChange={editOnChange}
+                        />
+                      ) : (
+                        <p className="text-muted mb-0">{email}</p>
+                      )}
                     </div>
                   </div>
                   <hr />
@@ -146,7 +214,17 @@ const Profile = ({ data }: any) => {
                       <p className="mb-0">Phone</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0"></p>
+                      {edit ? (
+                        <input
+                          type="text"
+                          name="phone"
+                          className="form-control"
+                          value={editProfile.phone}
+                          onChange={editOnChange}
+                        />
+                      ) : (
+                        <p className="text-muted mb-0">{phone}</p>
+                      )}
                     </div>
                   </div>
                   <hr />
@@ -155,7 +233,17 @@ const Profile = ({ data }: any) => {
                       <p className="mb-0">Address</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0"></p>
+                      {edit ? (
+                        <input
+                          type="text"
+                          name="address"
+                          className="form-control"
+                          value={editProfile.address}
+                          onChange={editOnChange}
+                        />
+                      ) : (
+                        <p className="text-muted mb-0">{address}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -215,6 +303,7 @@ export const getServerSideProps = async ({ req }: any) => {
     return {
       props: {
         data: verifiedUser,
+        jwt: serverJwt,
       },
     };
   } else {

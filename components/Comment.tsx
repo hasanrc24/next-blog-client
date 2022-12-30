@@ -30,13 +30,19 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
       },
     };
     try {
-      await axios.post(`${API_URL}/api/comments`, commentData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      setCommentValue("");
-      router.reload();
+      const response = await axios.post(
+        `${API_URL}/api/comments`,
+        commentData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setCommentValue("");
+        router.reload();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -124,7 +130,7 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
                 </div>
               </div>
               <div className="float-end mt-2 pt-1">
-                <button type="submit" className="btn cmnt-btn px-2 py-1 me-2">
+                <button type="submit" className="btn res-nav-btn">
                   Submit
                 </button>
               </div>
