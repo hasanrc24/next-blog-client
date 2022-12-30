@@ -4,7 +4,11 @@ import React, { useState } from "react";
 import { API_URL } from "../config/config";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../redux/userSlice";
-import { setUserCookie, verifyUser } from "../config/auth";
+import {
+  getTokenFromServerCookie,
+  setUserCookie,
+  verifyUser,
+} from "../config/auth";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -90,3 +94,17 @@ const Login = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps({ req }: any) {
+  const jwt = getTokenFromServerCookie(req);
+  if (jwt) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}

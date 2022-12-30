@@ -221,6 +221,10 @@ footer{
   background-color: #9762f5;
   color: white;
 }
+.my-articles:hover{
+  color: #9762f5;
+  transition: all .2s ease;
+}
 @media screen and (max-width: 768px) {
   .bars{
   display: block;

@@ -12,10 +12,7 @@ interface propType {
 }
 const Navbar = ({ setNavOpen }: propType) => {
   const dispatch = useDispatch();
-  const router = useRouter();
   const [hydrated, setHydrated] = useState(false);
-  // const authenticatedUser = useSelector(userSubscribe);
-  // const user = authenticatedUser?.user?.user?.username;
   const user = getUserNameFromCookie();
 
   const handleLogout = () => {

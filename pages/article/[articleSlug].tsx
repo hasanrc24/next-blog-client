@@ -81,7 +81,6 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
             comments={comments}
             articleId={singleArticle.id}
             user={user}
-            // commenter={singleArticle.attributes.comments.data}
           />
         </div>
         <div className="col-md-4">

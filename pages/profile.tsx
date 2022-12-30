@@ -1,9 +1,10 @@
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { createDispatchHook, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { getTokenFromServerCookie } from "../config/auth";
 import { API_URL } from "../config/config";
 import { userInfo } from "../redux/userSlice";
@@ -14,8 +15,17 @@ const Profile = ({ data, jwt }: any) => {
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
-  const { firstName, lastName, username, email, avatar, phone, address, id } =
-    data;
+  const {
+    firstName,
+    lastName,
+    username,
+    email,
+    avatar,
+    phone,
+    address,
+    id,
+    articles,
+  } = data;
 
   const [editProfile, setEditProfile] = useState({
     firstName: firstName,
@@ -24,9 +34,11 @@ const Profile = ({ data, jwt }: any) => {
     phone: phone,
     address: address,
   });
-  // console.log(editProfile);
+  console.log(articles);
 
-  dispatch(userInfo(data));
+  useEffect(() => {
+    dispatch(userInfo(data));
+  }, []);
   const handleProfileEdit = () => {
     setEdit(true);
   };
@@ -249,27 +261,33 @@ const Profile = ({ data, jwt }: any) => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-12">
                   <div className="card mb-4 mb-md-0">
                     <div className="card-body">
-                      <p className="mb-4">
-                        <span className="text-primary font-italic me-1">
-                          assigment
-                        </span>{" "}
-                        Project Status
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="card mb-4 mb-md-0">
-                    <div className="card-body">
-                      <p className="mb-4">
-                        <span className="text-primary font-italic me-1">
-                          assigment
-                        </span>{" "}
-                        Project Status
-                      </p>
+                      <h5 className="mb-4 fw-bold">My Articles</h5>
+                      <hr />
+                      {articles.length > 0 ? (
+                        articles?.map((curArt: any) => {
+                          const { id, title, slug } = curArt;
+                          return (
+                            <div key={id} className="pb-3 ">
+                              <Link
+                                href={`/article/${slug}`}
+                                className="my-articles"
+                              >
+                                {title}
+                              </Link>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <>
+                          <p>You didn&apos;t post any article yet.</p>
+                        </>
+                      )}
+                      <Link href="" className="btn sub-btn">
+                        Post an article
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -294,7 +312,7 @@ export const getServerSideProps = async ({ req }: any) => {
     };
   }
   if (serverJwt) {
-    const res = await fetch(`${API_URL}/api/users/me`, {
+    const res = await fetch(`${API_URL}/api/users/me?populate=*`, {
       headers: {
         Authorization: `Bearer ${serverJwt}`,
       },

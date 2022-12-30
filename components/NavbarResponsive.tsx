@@ -2,8 +2,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import Image from "next/image";
-import { unsetUserCookie } from "../config/auth";
-import { useRouter } from "next/router";
+import { getUserNameFromCookie, unsetUserCookie } from "../config/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { userInfo, userSubscribe } from "../redux/userSlice";
 
@@ -13,11 +12,10 @@ interface propType {
 }
 const NavbarResponsive = ({ navOpen, setNavOpen }: propType) => {
   const [hydrate, setHydrate] = useState(false);
-  // const user = getUserNameFromCookie();
-  const router = useRouter();
+  const user = getUserNameFromCookie();
   const dispatch = useDispatch();
-  const authenticatedUser = useSelector(userSubscribe);
-  const user = authenticatedUser?.user?.user?.username;
+  // const authenticatedUser = useSelector(userSubscribe);
+  // const user = authenticatedUser?.user?.user?.username;
 
   useEffect(() => {
     setHydrate(true);
@@ -78,13 +76,16 @@ const NavbarResponsive = ({ navOpen, setNavOpen }: propType) => {
               </button>
             </li>
           ) : (
-            <li>
+            <li className="d-flex flex-column justify-align-center">
               <Link
                 href="/login"
                 className="btn res-nav-btn"
                 onClick={() => setNavOpen(false)}
               >
                 Log in
+              </Link>
+              <Link href="/register" className="btn sub-btn mt-2">
+                Sign up
               </Link>
             </li>
           ))}
