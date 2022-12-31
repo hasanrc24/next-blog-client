@@ -285,7 +285,7 @@ const Profile = ({ data, jwt }: any) => {
                           <p>You didn&apos;t post any article yet.</p>
                         </>
                       )}
-                      <Link href="" className="btn sub-btn">
+                      <Link href="/createArticle" className="btn sub-btn">
                         Post an article
                       </Link>
                     </div>

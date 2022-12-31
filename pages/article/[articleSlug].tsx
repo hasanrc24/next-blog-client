@@ -27,7 +27,6 @@ interface propsType {
 const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
   const { title, body } = singleArticle.attributes;
   const avatar = singleArticle.attributes.author.data.attributes.avatar;
-  // console.log(singleArticle.attributes.comments.data);
   return (
     <>
       <Head>

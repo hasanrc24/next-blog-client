@@ -225,6 +225,50 @@ footer{
   color: #9762f5;
   transition: all .2s ease;
 }
+
+
+textarea {
+	resize: none;
+}
+.form-label {
+	font-size: 12px;
+	color: #5e9bfc;
+	margin: 0;
+	display: block;
+	opacity: 1;
+	-webkit-transition: .333s ease top, .333s ease opacity;
+	transition: .333s ease top, .333s ease opacity;
+}
+.form-des{
+  border-radius: 0;
+  border-style: none none solid none;
+  border-color: #ccc;
+   	border-width: 0 0 2px 0;
+    cursor: pointer;
+}
+.form-des:focus{
+  box-shadow: none;
+	border-color: #9762f5;
+}
+.form-control {
+	border-radius: 0;
+	border-color: #ccc;
+   	border-width: 0 0 2px 0;
+   	border-style: none none solid none;
+   	box-shadow: none;
+}
+.form-control:focus {
+	box-shadow: none;
+	border-color: #9762f5;
+}
+.js-hide-label {
+	opacity: 0; 	
+}
+.js-unhighlight-label {
+	color: #999 
+}
+
+
 @media screen and (max-width: 768px) {
   .bars{
   display: block;
