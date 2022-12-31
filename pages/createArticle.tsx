@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
-import { fetchCategories } from "../http";
+import { fetchCategories, generateUID } from "../http";
 import { Category, CollectionTypes } from "../types";
 import { getTokenFromServerCookie } from "../config/auth";
 import { API_URL } from "../config/config";
@@ -17,6 +17,7 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
     title: "",
     category: `${categories[0].id}`,
     body: "",
+    slug: "",
   });
   const handleChange = (e: any) => {
     setValue({ ...value, [e.target.name]: e.target.value });
@@ -25,12 +26,16 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
     e.preventDefault();
     setLoading(true);
 
+    const slug: any = await generateUID(value.title);
+    console.log(slug);
+
     const articleData = {
       data: {
         title: value.title,
         body: value.body,
         category: value.category,
         author: user.id,
+        slug: slug.data,
       },
     };
 
@@ -45,6 +50,7 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
           title: "",
           category: `${categories[0].id}`,
           body: "",
+          slug: "",
         });
         setLoading(false);
       }
@@ -52,6 +58,11 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
       console.log(error);
       setLoading(false);
     }
+
+    // const titleee = "My man";
+    // const abc: any = await generateUID(titleee);
+
+    // console.log(abc);
   };
 
   return (

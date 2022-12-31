@@ -45,6 +45,24 @@ const Login = () => {
       }
     }
   };
+  const handleDemoLogin = async () => {
+    try {
+      const login = await axios.post(`${API_URL}/api/auth/local`, {
+        identifier: "hanoda3992@paxven.com",
+        password: "hanoda3992@paxven.com",
+      });
+      setUserCookie(login.data);
+      (await verifyUser()) &&
+        (dispatch(userInfo(login.data)), router.push("/"));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.error.message);
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }
+    }
+  };
 
   return (
     <div className="mx-auto login-comp my-5">
@@ -58,7 +76,7 @@ const Login = () => {
         <div className="form-outline mb-4">
           <input
             type="text"
-            placeholder="username or password"
+            placeholder="Username or E-mail"
             name="identifier"
             id="form2Example1"
             className="form-control"
@@ -80,6 +98,9 @@ const Login = () => {
 
         <button type="submit" className="btn btn-paginate mb-4">
           Login
+        </button>
+        <button className="btn mb-4 sub-btn" onClick={handleDemoLogin}>
+          Demo login
         </button>
 
         <div className="text-center">

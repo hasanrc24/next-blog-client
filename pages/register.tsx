@@ -65,7 +65,7 @@ const Register = () => {
         <div className="form-outline mb-4 d-flex gap-3">
           <input
             type="text"
-            placeholder="first name"
+            placeholder="First name"
             name="firstname"
             className="form-control w-50"
             onChange={handleChange}
@@ -73,7 +73,7 @@ const Register = () => {
           />
           <input
             type="text"
-            placeholder="last name"
+            placeholder="Last name"
             name="lastname"
             className="form-control w-50"
             onChange={handleChange}
@@ -83,7 +83,7 @@ const Register = () => {
         <div className="form-outline mb-4">
           <input
             type="text"
-            placeholder="username"
+            placeholder="Username"
             name="username"
             className="form-control"
             onChange={handleChange}

@@ -34,7 +34,6 @@ const Profile = ({ data, jwt }: any) => {
     phone: phone,
     address: address,
   });
-  console.log(articles);
 
   useEffect(() => {
     dispatch(userInfo(data));
@@ -270,7 +269,11 @@ const Profile = ({ data, jwt }: any) => {
                         articles?.map((curArt: any) => {
                           const { id, title, slug } = curArt;
                           return (
-                            <div key={id} className="pb-3 ">
+                            <div
+                              key={id}
+                              className="pb-3"
+                              style={{ fontWeight: "500" }}
+                            >
                               <Link
                                 href={`/article/${slug}`}
                                 className="my-articles"
