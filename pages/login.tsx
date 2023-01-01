@@ -1,7 +1,6 @@
 import axios from "axios";
 import Head from "next/head";
 import React, { useState } from "react";
-import { API_URL } from "../config/config";
 import { useDispatch } from "react-redux";
 import { userInfo } from "../redux/userSlice";
 import {
@@ -32,7 +31,10 @@ const Login = () => {
       password: userData.password,
     };
     try {
-      const login = await axios.post(`${API_URL}/api/auth/local`, loginInfo);
+      const login = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/local`,
+        loginInfo
+      );
       setUserCookie(login.data);
       (await verifyUser()) &&
         (dispatch(userInfo(login.data)), router.push("/"));
@@ -47,10 +49,13 @@ const Login = () => {
   };
   const handleDemoLogin = async () => {
     try {
-      const login = await axios.post(`${API_URL}/api/auth/local`, {
-        identifier: "hanoda3992@paxven.com",
-        password: "hanoda3992@paxven.com",
-      });
+      const login = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/local`,
+        {
+          identifier: "hanoda3992@paxven.com",
+          password: "hanoda3992@paxven.com",
+        }
+      );
       setUserCookie(login.data);
       (await verifyUser()) &&
         (dispatch(userInfo(login.data)), router.push("/"));
@@ -99,7 +104,11 @@ const Login = () => {
         <button type="submit" className="btn btn-paginate mb-4">
           Login
         </button>
-        <button className="btn mb-4 sub-btn" onClick={handleDemoLogin}>
+        <button
+          type="button"
+          className="btn mb-4 sub-btn"
+          onClick={handleDemoLogin}
+        >
           Demo login
         </button>
 

@@ -6,12 +6,12 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getTokenFromServerCookie } from "../config/auth";
-import { API_URL } from "../config/config";
 import { userInfo } from "../redux/userSlice";
 
 const Profile = ({ data, jwt }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [msg, setMsg] = useState(false);
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [imageData, setImageData] = useState<any>(null);
@@ -60,7 +60,11 @@ const Profile = ({ data, jwt }: any) => {
         const responseData = await response.json();
         if (responseData.message === "success") {
           setLoading(false);
-          router.reload();
+          // router.reload();
+          setMsg(true);
+          setTimeout(() => {
+            setMsg(false);
+          }, 3000);
         }
       } catch (error) {
         console.error(JSON.stringify(error));
@@ -68,11 +72,15 @@ const Profile = ({ data, jwt }: any) => {
       }
     }
     try {
-      const res = await axios.put(`${API_URL}/api/users/${id}`, editProfile, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${id}`,
+        editProfile,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       if (res.status === 200) {
         setLoading(false);
         router.reload();
@@ -110,8 +118,9 @@ const Profile = ({ data, jwt }: any) => {
                         width={100}
                       />
                     ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${avatar}`}
+                        src={`${process.env.NEXT_PUBLIC_CLOUDINARY_IMG}${avatar}`}
                         alt={username}
                         height={100}
                         width={100}
@@ -140,7 +149,7 @@ const Profile = ({ data, jwt }: any) => {
                       className={`btn res-nav-btn mt-3 ${
                         loading && "disabled"
                       }`}
-                      type="submit"
+                      type="button"
                       onClick={handleSave}
                     >
                       Save
@@ -166,6 +175,7 @@ const Profile = ({ data, jwt }: any) => {
                     Edit profile
                   </button>
                 )}
+                {msg && <p>It will take some time to update the image.</p>}
               </div>
             </div>
             <div className="col-lg-8">
@@ -315,11 +325,14 @@ export const getServerSideProps = async ({ req }: any) => {
     };
   }
   if (serverJwt) {
-    const res = await fetch(`${API_URL}/api/users/me?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${serverJwt}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/me?populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${serverJwt}`,
+        },
+      }
+    );
     const verifiedUser = await res.json();
     return {
       props: {

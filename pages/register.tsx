@@ -2,7 +2,6 @@ import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
-import { API_URL } from "../config/config";
 import { setUserCookie } from "../config/auth";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -31,7 +30,7 @@ const Register = () => {
 
     try {
       const responseData = await axios.post(
-        `${API_URL}/api/auth/local/register`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/local/register`,
         {
           firstName: userData.firstname,
           lastName: userData.lastname,

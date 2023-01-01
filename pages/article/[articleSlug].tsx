@@ -14,7 +14,6 @@ import {
   FaLinkedinIn,
   FaTwitter,
 } from "react-icons/fa";
-import { API_URL, CLOUDINARY_URL } from "../../config/config";
 import Comment from "../../components/Comment";
 import { getTokenFromServerCookie } from "../../config/auth";
 
@@ -48,7 +47,7 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
               />
             ) : (
               <img
-                src={`${CLOUDINARY_URL}${avatar}`}
+                src={`${process.env.NEXT_PUBLIC_CLOUDINARY_IMG}${avatar}`}
                 alt={singleArticle.attributes.author.data.attributes.username}
                 height={30}
                 width={30}
@@ -67,7 +66,7 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
             {singleArticle.attributes.image?.data && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={`${API_URL}${singleArticle.attributes.image?.data?.attributes?.url}`}
+                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${singleArticle.attributes.image?.data?.attributes?.url}`}
                 alt="body image"
                 className="img-fluid"
                 style={{ width: "100%" }}
@@ -141,11 +140,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { data: comments }: AxiosResponse<CollectionTypes<CommentType[]>> =
     await fetchComments();
 
-  const res = await fetch(`${API_URL}/api/users/me`, {
-    headers: {
-      Authorization: `Bearer ${jwt}`,
-    },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/me`,
+    {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
   const verifiedUser = await res.json();
   return {
     props: {

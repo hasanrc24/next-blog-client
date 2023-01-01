@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { API_URL, CLOUDINARY_URL } from "../config/config";
 import { CommentType } from "../types";
 import { formatCommentDate } from "../utils";
 
@@ -31,7 +30,7 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
     };
     try {
       const response = await axios.post(
-        `${API_URL}/api/comments`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/comments`,
         commentData,
         {
           headers: {
@@ -70,7 +69,7 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
                       />
                     ) : (
                       <img
-                        src={`${CLOUDINARY_URL}${com.attributes.avatar}`}
+                        src={`${process.env.NEXT_PUBLIC_CLOUDINARY_IMG}${com.attributes.avatar}`}
                         alt={user.username}
                         height={45}
                         width={45}
@@ -110,7 +109,7 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
                   />
                 ) : (
                   <img
-                    src={`${CLOUDINARY_URL}${user.avatar}`}
+                    src={`${process.env.NEXT_PUBLIC_CLOUDINARY_IMG}${user.avatar}`}
                     alt={user.username}
                     height={45}
                     width={45}

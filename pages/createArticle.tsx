@@ -4,7 +4,6 @@ import Head from "next/head";
 import { fetchCategories, generateUID } from "../http";
 import { Category, CollectionTypes } from "../types";
 import { getTokenFromServerCookie } from "../config/auth";
-import { API_URL } from "../config/config";
 
 interface propsType {
   categories: Category[];
@@ -12,6 +11,7 @@ interface propsType {
   jwt: string;
 }
 const CreateArticle = ({ categories, user, jwt }: propsType) => {
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState({
     title: "",
@@ -35,16 +35,20 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
         body: value.body,
         category: value.category,
         author: user.id,
-        slug: slug.data,
+        slug: slug,
       },
     };
 
     try {
-      const res = await axios.post(`${API_URL}/api/articles`, articleData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/articles`,
+        articleData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       if (res.status === 200) {
         setValue({
           title: "",
@@ -58,11 +62,9 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
       console.log(error);
       setLoading(false);
     }
-
-    // const titleee = "My man";
-    // const abc: any = await generateUID(titleee);
-
-    // console.log(abc);
+  };
+  const handleImageSelect = (e: any) => {
+    setImage(e.target.files[0]);
   };
 
   return (
@@ -112,16 +114,6 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
                 })}
               </select>
             </div>
-            {/* <div className="form-group my-3">
-              <input
-                type="text"
-                className="form-control"
-                id="subject"
-                name="subject"
-                placeholder="Subject"
-                tabIndex={3}
-              />
-            </div> */}
             <div className="form-group my-3">
               <textarea
                 rows={5}
@@ -134,6 +126,13 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
                 value={value.body}
                 required
               ></textarea>
+            </div>
+            <div className="form-group my-3  w-50 mx-auto">
+              <input
+                type="file"
+                className="form-control"
+                onChange={handleImageSelect}
+              />
             </div>
             <div className="text-center">
               <button
@@ -171,11 +170,14 @@ export const getServerSideProps = async ({ req }: any) => {
     };
   }
   if (serverJwt) {
-    const res = await fetch(`${API_URL}/api/users/me?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${serverJwt}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/me?populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${serverJwt}`,
+        },
+      }
+    );
     const verifiedUser = await res.json();
     return {
       props: {

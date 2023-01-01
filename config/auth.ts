@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import Router from 'next/router';
-import { API_URL } from './config';
 
 export const setUserCookie = (data: any) => {
     if(typeof window === 'undefined'){
@@ -50,7 +49,7 @@ export const verifyUser = async() => {
     const jwt = getUserTokenFromCookie();
     if(jwt){
         try {
-            const verified = await axios.get(`${API_URL}/api/users/me`, {
+            const verified = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/me`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`
                 }

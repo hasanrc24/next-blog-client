@@ -34,7 +34,7 @@ export default async function upload(req:any, res:any){
       });
       const {public_id} = response;
       const jwt = getTokenFromServerCookie(req);
-      const userResponse = await fetch(`${process.env.API_BASE_URL}/api/users/${user_id}`,{
+      const userResponse = await fetch(`http://localhost:1337/api/users/${user_id}`,{
         method: 'PUT',
         headers:{
           'Content-Type': 'application/json',

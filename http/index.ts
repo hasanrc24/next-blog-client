@@ -1,7 +1,6 @@
 import axios from "axios";
-import { API_URL } from "../config/config";
 const api = axios.create({
-    baseURL: process.env.API_BASE_URL,
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: {
         Authorization: `Bearer ${process.env.API_TOKEN}`
     }
@@ -22,7 +21,7 @@ export const fetchComments = async() =>{
 export const generateUID = async(title: string) => {
     try {
         const response = await axios.post(
-          `${API_URL}/content-manager/uid/generate`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/content-manager/uid/generate`,
           {
             contentTypeUID: "api::article.article",
             field: "slug",
@@ -32,12 +31,11 @@ export const generateUID = async(title: string) => {
           },
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjcyNTEyMjM3LCJleHAiOjE2NzUxMDQyMzd9.dQ_dJhNGrTxrQyf5db0zNqMwmAFCmV3hpNhSbVWO1PM`,
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_UID_TOKEN}`,
             },
           }
         );
-        console.log(response);
-        return response.data
+        return response.data.data;
       } catch (error) {
         console.log(error);
         return error

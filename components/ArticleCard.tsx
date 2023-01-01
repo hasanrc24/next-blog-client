@@ -25,7 +25,7 @@ const ArticleCard = ({ article }: propsType) => {
           />
         ) : (
           <img
-            src={`https://res.cloudinary.com/dnqvwwxzv/image/upload/${article.attributes.author.data.attributes.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_CLOUDINARY_IMG}${article.attributes.author.data.attributes.avatar}`}
             alt="avatar"
             height={30}
             width={30}
