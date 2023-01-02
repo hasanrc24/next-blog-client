@@ -11,7 +11,7 @@ interface propsType {
   jwt: string;
 }
 const CreateArticle = ({ categories, user, jwt }: propsType) => {
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState({
     title: "",
@@ -19,15 +19,21 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
     body: "",
     slug: "",
   });
+
   const handleChange = (e: any) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
+
+  const handleImageSelect = (e: any) => {
+    setFile(e.target.files[0]);
+  };
+
   const hanleArticleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
+    let refId;
 
     const slug: any = await generateUID(value.title);
-    console.log(slug);
 
     const articleData = {
       data: {
@@ -57,14 +63,36 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
           slug: "",
         });
         setLoading(false);
+        refId = res.data.data.id;
       }
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
-  };
-  const handleImageSelect = (e: any) => {
-    setImage(e.target.files[0]);
+
+    if (file !== null) {
+      const formData = new FormData();
+      formData.append("ref", "api::article.article");
+      formData.append("refId", refId);
+      formData.append("field", "image");
+      formData.append("files", file);
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          setFile(null);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
