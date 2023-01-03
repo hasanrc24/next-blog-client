@@ -26,6 +26,7 @@ export default function Home({ categories, articles }: propsType) {
   const handleSearch = (e: any) => {
     router.push(`/?search=${e.target.value}`);
   };
+
   return (
     <div>
       <Head>

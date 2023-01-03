@@ -1,3 +1,5 @@
+import { MDXRemoteSerializeResult } from "next-mdx-remote/dist"
+
 export interface Category{
     id: number,
     attributes: {
@@ -62,7 +64,7 @@ export interface Article{
     id: number,
     attributes: {
         title: string,
-        body: string,
+        body: string | MDXRemoteSerializeResult,
         slug: string,
         createdAt: string,
         image: Image

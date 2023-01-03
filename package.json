@@ -20,20 +20,25 @@
     "formidable": "^2.1.1",
     "js-cookie": "^3.0.1",
     "lodash.debounce": "^4.0.8",
+    "markdown-it": "^13.0.1",
     "next": "13.0.6",
+    "next-mdx-remote": "^4.2.0",
     "next-redux-wrapper": "^8.0.0",
     "nextjs-progressbar": "^0.0.16",
     "qs": "^6.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
+    "react-markdown-editor-lite": "^1.3.4",
     "react-redux": "^8.0.5",
+    "styled-components": "^5.3.6",
     "typescript": "4.9.4"
   },
   "devDependencies": {
     "@types/formidable": "^2.0.5",
     "@types/js-cookie": "^3.0.2",
     "@types/lodash.debounce": "^4.0.7",
+    "@types/markdown-it": "^12.2.3",
     "@types/qs": "^6.9.7"
   }
 }

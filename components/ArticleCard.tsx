@@ -3,12 +3,13 @@ import Link from "next/link";
 import React from "react";
 import { Article } from "../types";
 import { formatDate } from "../utils";
+import { MDXRemote } from "next-mdx-remote";
 
 interface propsType {
   article: Article;
 }
 const ArticleCard = ({ article }: propsType) => {
-  const { title, body } = article.attributes;
+  const { title, body }: any = article.attributes;
   return (
     <div>
       <h4>

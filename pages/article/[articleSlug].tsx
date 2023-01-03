@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import qs from "qs";
 import React from "react";
 import { fetchArticles, fetchComments } from "../../http";
 import { CollectionTypes, Article, CommentType } from "../../types";
-import { formatDate } from "../../utils/index";
+import { formatDate, serializedData } from "../../utils/index";
 import {
   FaFacebookF,
   FaInstagram,
@@ -16,6 +16,8 @@ import {
 } from "react-icons/fa";
 import Comment from "../../components/Comment";
 import { getTokenFromServerCookie } from "../../config/auth";
+import { MDXRemote } from "next-mdx-remote";
+import { MDXRemoteSerializeResult } from "next-mdx-remote/dist";
 
 interface propsType {
   singleArticle: Article;
@@ -72,7 +74,9 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
                 style={{ width: "100%" }}
               />
             )}
-            <p className="pt-3">{body}</p>
+            <div className="pt-3">
+              <MDXRemote {...(body as MDXRemoteSerializeResult)} />
+            </div>
           </div>
           <Comment
             jwt={jwt}
@@ -151,7 +155,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const verifiedUser = await res.json();
   return {
     props: {
-      singleArticle: article.data[0],
+      singleArticle: await serializedData(article.data[0]),
       jwt: jwt,
       comments: article.data[0].attributes.comments.data,
       user: verifiedUser,

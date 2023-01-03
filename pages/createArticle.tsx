@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import dynamic from "next/dynamic";
+import MarkdownIt from "markdown-it";
 import Head from "next/head";
 import { fetchCategories, generateUID } from "../http";
 import { Category, CollectionTypes } from "../types";
 import { getTokenFromServerCookie } from "../config/auth";
+import "react-markdown-editor-lite/lib/index.css";
 
+const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
+  ssr: false,
+});
 interface propsType {
   categories: Category[];
   user: any;
@@ -20,12 +26,18 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
     slug: "",
   });
 
+  console.log(value);
   const handleChange = (e: any) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
   const handleImageSelect = (e: any) => {
     setFile(e.target.files[0]);
+  };
+
+  const mdParser = new MarkdownIt(/* Markdown-it options */);
+  const handleEditorChange = ({ text }: any) => {
+    setValue({ ...value, body: text });
   };
 
   const hanleArticleSubmit = async (e: any) => {
@@ -142,20 +154,15 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
                 })}
               </select>
             </div>
-            <div className="form-group my-3">
-              <textarea
-                rows={5}
-                cols={50}
-                name="body"
-                className="form-control"
-                placeholder="Enter your article here..."
-                tabIndex={4}
-                onChange={handleChange}
+            <div className="form-group my-3 mx-auto">
+              <MdEditor
+                style={{ height: "300px" }}
+                renderHTML={(text) => mdParser.render(text)}
+                onChange={handleEditorChange}
                 value={value.body}
-                required
-              ></textarea>
+              />
             </div>
-            <div className="form-group my-3  w-50 mx-auto">
+            <div className="form-group my-3 w-50 mx-auto">
               <input
                 type="file"
                 className="form-control"
