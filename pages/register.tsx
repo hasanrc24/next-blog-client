@@ -45,7 +45,7 @@ const Register = () => {
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data.error.message);
+        setError(error.response?.data);
         setTimeout(() => {
           setError("");
         }, 2000);

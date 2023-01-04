@@ -26,7 +26,6 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
     slug: "",
   });
 
-  console.log(value);
   const handleChange = (e: any) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };

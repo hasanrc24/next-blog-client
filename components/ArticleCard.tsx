@@ -16,7 +16,8 @@ const ArticleCard = ({ article }: propsType) => {
         <Link href={`/article/${article.attributes.slug}`}>{title}</Link>
       </h4>
       <div className="my-3">
-        {article.attributes.author.data.attributes.avatar === null ? (
+        {article.attributes.author.data.attributes.avatar === null ||
+        article.attributes.author.data.attributes.avatar === "default" ? (
           <Image
             src="/R.png"
             alt="avatar"

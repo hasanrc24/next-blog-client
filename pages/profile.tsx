@@ -60,7 +60,7 @@ const Profile = ({ data, jwt }: any) => {
         const responseData = await response.json();
         if (responseData.message === "success") {
           setLoading(false);
-          // router.reload();
+          setEdit(false);
           setMsg(true);
           setTimeout(() => {
             setMsg(false);
@@ -83,7 +83,10 @@ const Profile = ({ data, jwt }: any) => {
       );
       if (res.status === 200) {
         setLoading(false);
-        router.reload();
+        setEdit(false);
+        if (file === null) {
+          router.reload();
+        }
       }
     } catch (error) {
       console.error(JSON.stringify(error));
