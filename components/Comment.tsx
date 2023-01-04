@@ -48,7 +48,7 @@ const Comment = ({ jwt, comments, articleId, user }: propsType) => {
   };
   return (
     <section>
-      <div className="row pt-4">
+      <div className="row pt-2">
         <div className="col-md-12 col-lg-10">
           <p className="pb-1" style={{ fontWeight: "500" }}>
             Comments:{" "}

@@ -223,6 +223,8 @@ const Profile = ({ data, jwt }: any) => {
                           className="form-control"
                           value={editProfile.email}
                           onChange={editOnChange}
+                          disabled
+                          style={{ cursor: "not-allowed" }}
                         />
                       ) : (
                         <p className="text-muted mb-0">{email}</p>

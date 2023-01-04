@@ -74,10 +74,11 @@ const articleSlug = ({ singleArticle, jwt, comments, user }: propsType) => {
                 style={{ width: "100%" }}
               />
             )}
-            <div className="pt-3">
+            <div className="pt-3 single-article-body-design">
               <MDXRemote {...(body as MDXRemoteSerializeResult)} />
             </div>
           </div>
+          <hr />
           <Comment
             jwt={jwt}
             comments={comments}

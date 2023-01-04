@@ -42,23 +42,13 @@ const NavbarResponsive = ({ navOpen, setNavOpen }: propType) => {
           </Link>
         </li>
         <li>
-          <Link href="/products" onClick={() => setNavOpen(false)}>
-            Products
+          <Link href="/about" onClick={() => setNavOpen(false)}>
+            About
           </Link>
         </li>
         <li>
-          <Link href="/pricing" onClick={() => setNavOpen(false)}>
-            Pricing
-          </Link>
-        </li>
-        <li>
-          <Link href="/docs" onClick={() => setNavOpen(false)}>
-            Docs
-          </Link>
-        </li>
-        <li>
-          <Link href="/company" onClick={() => setNavOpen(false)}>
-            Company
+          <Link href="/contact" onClick={() => setNavOpen(false)}>
+            Contact
           </Link>
         </li>
         {hydrate &&

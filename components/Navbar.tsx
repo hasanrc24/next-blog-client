@@ -37,16 +37,10 @@ const Navbar = ({ setNavOpen }: propType) => {
       />
       <ul className="nav-list">
         <li className="links">
-          <Link href="/products">Products</Link>
+          <Link href="/about">About</Link>
         </li>
         <li className="links">
-          <Link href="/pricing">Pricing</Link>
-        </li>
-        <li className="links">
-          <Link href="/docs">Docs</Link>
-        </li>
-        <li className="links">
-          <Link href="/company">Company</Link>
+          <Link href="/contact">Contact</Link>
         </li>
       </ul>
       <div className="nav-btn">

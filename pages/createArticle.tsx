@@ -160,6 +160,7 @@ const CreateArticle = ({ categories, user, jwt }: propsType) => {
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
                 value={value.body}
+                placeholder="Write your article here..."
               />
             </div>
             <div className="form-group my-3 w-50 mx-auto">
