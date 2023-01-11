@@ -20,6 +20,13 @@ export const fetchComments = async() =>{
 
 export const generateUID = async(title: string) => {
     try {
+      const adminLoginResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/login`,
+        {
+          email: "md7311047@gmail.com",
+          password: "Hasan1234@",
+        }
+      );
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/content-manager/uid/generate`,
           {
@@ -31,7 +38,7 @@ export const generateUID = async(title: string) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_UID_TOKEN}`,
+              Authorization: `Bearer ${adminLoginResponse.data.data.token}`,
             },
           }
         );
