@@ -23,8 +23,8 @@ export const generateUID = async(title: string) => {
       const adminLoginResponse = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/login`,
         {
-          email: "md7311047@gmail.com",
-          password: "Hasan1234@",
+          email: `${process.env.NEXT_PUBLIC_ADMIN_USER}`,
+          password: `${process.env.NEXT_PUBLIC_ADMIN_PASS}`,
         }
       );
         const response = await axios.post(
