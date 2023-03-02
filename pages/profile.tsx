@@ -121,7 +121,6 @@ const Profile = ({ data, jwt }: any) => {
                         width={100}
                       />
                     ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={`${process.env.NEXT_PUBLIC_CLOUDINARY_IMG}${avatar}`}
                         alt={username}
