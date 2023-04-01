@@ -319,6 +319,7 @@ const Profile = ({ data, jwt }: any) => {
 
 export default Profile;
 
+
 export const getServerSideProps = async ({ req }: any) => {
   const serverJwt = getTokenFromServerCookie(req);
   if (!serverJwt) {
